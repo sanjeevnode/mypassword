@@ -19,10 +19,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} antialiased`}>
+        <div className="bg-grid pointer-events-none fixed inset-0 z-0" />
         <AuthProvider>
           <VaultProvider>
-            <Navbar />
-            <main className="mx-auto max-w-5xl px-4 pb-16 pt-6">{children}</main>
+            <div className="relative z-10">
+              <Navbar />
+              <main className="mx-auto max-w-6xl px-4 pb-16 pt-6">{children}</main>
+            </div>
           </VaultProvider>
         </AuthProvider>
       </body>

@@ -2,6 +2,18 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Check,
+  Copy,
+  Eye,
+  EyeOff,
+  Globe,
+  KeyRound,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useVault } from "@/context/VaultContext";
 import { encryptJson, decryptJson } from "@/lib/crypto";
@@ -15,7 +27,9 @@ import {
 } from "@/lib/vault";
 import MasterGate from "@/components/MasterGate";
 import EntryModal, { EntryFormValue } from "@/components/EntryModal";
-import { GlassCard, GlassInput, PrimaryButton, GhostButton, Tag, Spinner } from "@/components/ui";
+import { GlowCard } from "@/components/aceternity/GlowCard";
+import { GlassCard, GlassInput, PrimaryButton, Tag, Spinner, SectionLabel } from "@/components/ui";
+import { cn } from "@/lib/utils";
 
 export default function VaultPage() {
   const { user, loading } = useAuth();
@@ -122,103 +136,124 @@ function Dashboard({ uid }: { uid: string }) {
   if (!entries) return <Spinner />;
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-3">
-        <GlassInput
-          placeholder="Search by site or URL…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="max-w-sm"
-        />
-        <div className="flex-1" />
-        <PrimaryButton onClick={() => setModal({})}>+ Add credential</PrimaryButton>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <SectionLabel>Vault</SectionLabel>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-white">
+            {entries.length} credential{entries.length === 1 ? "" : "s"}
+          </h1>
+        </div>
+        <PrimaryButton onClick={() => setModal({})}>
+          <Plus size={15} /> New credential
+        </PrimaryButton>
       </div>
 
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => setActiveTag(null)}
-            className={`rounded-full px-3 py-1 text-xs transition ${!activeTag ? "bg-purple-500/40 text-white" : "bg-white/5 text-purple-300 hover:bg-white/10"}`}
-          >
-            All
-          </button>
-          {allTags.map((t) => (
-            <button
-              key={t}
-              onClick={() => setActiveTag(activeTag === t ? null : t)}
-              className={`rounded-full px-3 py-1 text-xs transition ${activeTag === t ? "bg-purple-500/40 text-white" : "bg-white/5 text-purple-300 hover:bg-white/10"}`}
-            >
-              #{t}
-            </button>
-          ))}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="relative w-full max-w-sm">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <GlassInput
+            placeholder="Search site or URL…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-9"
+          />
         </div>
-      )}
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <TagPill active={!activeTag} onClick={() => setActiveTag(null)}>
+              All
+            </TagPill>
+            {allTags.map((t) => (
+              <TagPill key={t} active={activeTag === t} onClick={() => setActiveTag(activeTag === t ? null : t)}>
+                #{t}
+              </TagPill>
+            ))}
+          </div>
+        )}
+      </div>
 
       {filtered.length === 0 ? (
-        <GlassCard className="p-10 text-center text-purple-200/70">
-          {entries.length === 0
-            ? "Your vault is empty. Add your first credential!"
-            : "No entries match your search."}
+        <GlassCard className="flex flex-col items-center gap-3 p-14 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <KeyRound size={20} />
+          </div>
+          <p className="text-sm text-zinc-400">
+            {entries.length === 0
+              ? "Your vault is empty. Add your first credential."
+              : "No entries match your search."}
+          </p>
         </GlassCard>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((entry) => {
             const secret = revealed[entry.id];
             return (
-              <GlassCard key={entry.id} className="p-4">
+              <GlowCard key={entry.id} className="flex flex-col p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-semibold text-white">{entry.site}</h3>
-                    {entry.url && (
-                      <a
-                        href={entry.url.startsWith("http") ? entry.url : `https://${entry.url}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="truncate text-xs text-purple-300 hover:underline"
-                      >
-                        {entry.url}
-                      </a>
-                    )}
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-sm font-bold text-violet-300">
+                      {entry.site.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="truncate text-sm font-semibold text-white">{entry.site}</h3>
+                      {entry.url && (
+                        <a
+                          href={entry.url.startsWith("http") ? entry.url : `https://${entry.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-1 truncate text-[11px] text-zinc-500 hover:text-violet-300"
+                        >
+                          <Globe size={10} className="shrink-0" />
+                          <span className="truncate">{entry.url}</span>
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex shrink-0 gap-1">
-                    <GhostButton onClick={() => edit(entry)} title="Edit" className="px-2.5 py-1.5">
-                      ✏️
-                    </GhostButton>
-                    <GhostButton onClick={() => remove(entry)} title="Delete" className="px-2.5 py-1.5">
-                      🗑️
-                    </GhostButton>
+                  <div className="flex shrink-0 gap-0.5">
+                    <IconBtn title="Edit" onClick={() => edit(entry)}>
+                      <Pencil size={13} />
+                    </IconBtn>
+                    <IconBtn title="Delete" danger onClick={() => remove(entry)}>
+                      <Trash2 size={13} />
+                    </IconBtn>
                   </div>
                 </div>
 
                 {entry.tags?.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1.5">
+                  <div className="mt-3 flex flex-wrap gap-1">
                     {entry.tags.map((t) => (
                       <Tag key={t}>#{t}</Tag>
                     ))}
                   </div>
                 )}
 
-                <div className="mt-3 space-y-1 text-sm">
-                  {secret && (
-                    <>
-                      <p className="text-purple-200">
-                        <span className="text-purple-400/70">user:</span> {secret.username || "—"}
-                      </p>
-                      <p className="break-all font-mono text-purple-100">{secret.password}</p>
-                      {secret.notes && <p className="text-xs text-purple-300/70">{secret.notes}</p>}
-                    </>
-                  )}
-                </div>
+                {secret && (
+                  <div className="mt-3 space-y-1 rounded-lg border border-white/[0.07] bg-black/40 p-3 text-[13px]">
+                    <p className="truncate text-zinc-400">
+                      <span className="text-zinc-600">user </span>
+                      {secret.username || "—"}
+                    </p>
+                    <p className="break-all font-mono text-violet-200">{secret.password}</p>
+                    {secret.notes && <p className="pt-1 text-xs text-zinc-500">{secret.notes}</p>}
+                  </div>
+                )}
 
-                <div className="mt-3 flex gap-2">
-                  <GhostButton onClick={() => reveal(entry)} className="text-xs">
+                <div className="mt-auto flex gap-1.5 pt-4">
+                  <ActionBtn onClick={() => reveal(entry)}>
+                    {secret ? <EyeOff size={13} /> : <Eye size={13} />}
                     {secret ? "Hide" : "Reveal"}
-                  </GhostButton>
-                  <GhostButton onClick={() => copyPassword(entry)} className="text-xs">
-                    {copied === entry.id ? "Copied ✓" : "Copy password"}
-                  </GhostButton>
+                  </ActionBtn>
+                  <ActionBtn onClick={() => copyPassword(entry)}>
+                    {copied === entry.id ? (
+                      <Check size={13} className="text-emerald-400" />
+                    ) : (
+                      <Copy size={13} />
+                    )}
+                    {copied === entry.id ? "Copied" : "Copy"}
+                  </ActionBtn>
                 </div>
-              </GlassCard>
+              </GlowCard>
             );
           })}
         </div>
@@ -233,5 +268,65 @@ function Dashboard({ uid }: { uid: string }) {
         />
       )}
     </div>
+  );
+}
+
+function TagPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "rounded-full px-3 py-1 text-xs font-medium transition",
+        active
+          ? "border border-violet-500/40 bg-violet-500/20 text-violet-200"
+          : "border border-white/[0.08] bg-white/[0.03] text-zinc-500 hover:border-violet-500/30 hover:text-zinc-300"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+function IconBtn({
+  title,
+  danger,
+  onClick,
+  children,
+}: {
+  title: string;
+  danger?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      title={title}
+      onClick={onClick}
+      className={cn(
+        "rounded-md p-1.5 text-zinc-500 transition hover:bg-white/[0.06]",
+        danger ? "hover:text-rose-400" : "hover:text-white"
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+function ActionBtn({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className="btn-ghost flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white"
+    >
+      {children}
+    </button>
   );
 }

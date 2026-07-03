@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { Eye, EyeOff, X } from "lucide-react";
 import { Entry, EntrySecret } from "@/lib/vault";
-import { GlassCard, GlassInput, GlassTextarea, PrimaryButton, GhostButton } from "./ui";
+import { GlassInput, GlassTextarea, PrimaryButton, GhostButton, SectionLabel } from "./ui";
 
 export interface EntryFormValue {
   site: string;
@@ -55,29 +56,44 @@ export default function EntryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <GlassCard className="w-full max-w-lg bg-[#221040]/90 p-6">
-        <h3 className="mb-4 text-lg font-bold text-white">
-          {initial ? "Edit credential" : "Add credential"}
-        </h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="panel glow-border w-full max-w-lg rounded-2xl p-6">
+        <div className="mb-5 flex items-start justify-between">
+          <div>
+            <SectionLabel>{initial ? "Edit" : "New"}</SectionLabel>
+            <h3 className="mt-0.5 text-lg font-bold tracking-tight text-white">
+              {initial ? "Edit credential" : "Add credential"}
+            </h3>
+          </div>
+          <button onClick={onClose} className="rounded-md p-1.5 text-zinc-500 transition hover:bg-white/5 hover:text-white">
+            <X size={16} />
+          </button>
+        </div>
         <form onSubmit={submit} className="space-y-3">
-          <GlassInput placeholder="Site name (e.g. GitHub)" value={site} onChange={(e) => setSite(e.target.value)} autoFocus />
-          <GlassInput placeholder="URL (optional)" value={url} onChange={(e) => setUrl(e.target.value)} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <GlassInput placeholder="Site name (e.g. GitHub)" value={site} onChange={(e) => setSite(e.target.value)} autoFocus />
+            <GlassInput placeholder="URL (optional)" value={url} onChange={(e) => setUrl(e.target.value)} />
+          </div>
           <GlassInput placeholder="Username / email" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <div className="flex gap-2">
+          <div className="relative">
             <GlassInput
               type={showPw ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="pr-10"
             />
-            <GhostButton type="button" onClick={() => setShowPw((s) => !s)}>
-              {showPw ? "Hide" : "Show"}
-            </GhostButton>
+            <button
+              type="button"
+              onClick={() => setShowPw((s) => !s)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 transition hover:text-white"
+            >
+              {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
+            </button>
           </div>
           <GlassInput placeholder="Tags, comma separated (e.g. work, dev)" value={tags} onChange={(e) => setTags(e.target.value)} />
           <GlassTextarea placeholder="Notes (encrypted)" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
-          {error && <p className="text-sm text-rose-300">{error}</p>}
+          {error && <p className="text-sm text-rose-400">{error}</p>}
           <div className="flex justify-end gap-2 pt-2">
             <GhostButton type="button" onClick={onClose}>
               Cancel
@@ -87,7 +103,7 @@ export default function EntryModal({
             </PrimaryButton>
           </div>
         </form>
-      </GlassCard>
+      </div>
     </div>
   );
 }

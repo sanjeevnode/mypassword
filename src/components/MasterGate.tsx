@@ -5,8 +5,10 @@
  * users, the unlock form when locked, and children once unlocked.
  */
 import { useState, ReactNode, FormEvent } from "react";
+import { Lock, ShieldCheck } from "lucide-react";
 import { useVault } from "@/context/VaultContext";
-import { GlassCard, GlassInput, PrimaryButton, Spinner } from "./ui";
+import { GlassInput, PrimaryButton, Spinner, SectionLabel } from "./ui";
+import { GlowCard } from "./aceternity/GlowCard";
 
 export default function MasterGate({ children }: { children: ReactNode }) {
   const { status } = useVault();
@@ -39,14 +41,20 @@ function SetupForm() {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <GlassCard className="w-full max-w-md p-8">
-        <h2 className="mb-2 text-xl font-bold text-white">Create your Master Password</h2>
-        <p className="mb-6 text-sm text-purple-200/70">
-          This single password protects your entire vault. It is never sent to any server —{" "}
-          <strong className="text-purple-100">if you forget it, your data cannot be recovered.</strong>
+    <div className="flex min-h-[65vh] items-center justify-center">
+      <GlowCard className="glow-border w-full max-w-md p-8">
+        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <ShieldCheck size={20} />
+        </div>
+        <SectionLabel>One-time setup</SectionLabel>
+        <h2 className="mt-1 text-xl font-bold tracking-tight text-white">
+          Create your Master Password
+        </h2>
+        <p className="mt-2 mb-6 text-[13px] leading-relaxed text-zinc-500">
+          This single password protects your entire vault and never leaves this device.{" "}
+          <span className="text-zinc-300">If you forget it, your data cannot be recovered.</span>
         </p>
-        <form onSubmit={submit} className="space-y-4">
+        <form onSubmit={submit} className="space-y-3">
           <GlassInput
             type="password"
             placeholder="Master password (min 10 characters)"
@@ -60,12 +68,12 @@ function SetupForm() {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
           />
-          {error && <p className="text-sm text-rose-300">{error}</p>}
+          {error && <p className="text-sm text-rose-400">{error}</p>}
           <PrimaryButton type="submit" disabled={busy} className="w-full py-3">
-            {busy ? "Setting up vault…" : "Create Vault"}
+            {busy ? "Deriving keys…" : "Create Vault"}
           </PrimaryButton>
         </form>
-      </GlassCard>
+      </GlowCard>
     </div>
   );
 }
@@ -86,11 +94,16 @@ function UnlockForm() {
   };
 
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <GlassCard className="w-full max-w-md p-8 text-center">
-        <div className="mb-3 text-5xl">🔒</div>
-        <h2 className="mb-6 text-xl font-bold text-white">Vault is locked</h2>
-        <form onSubmit={submit} className="space-y-4">
+    <div className="flex min-h-[65vh] items-center justify-center">
+      <GlowCard className="glow-border w-full max-w-sm p-8 text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <Lock size={20} />
+        </div>
+        <h2 className="text-lg font-bold tracking-tight text-white">Vault is locked</h2>
+        <p className="mt-1 mb-6 text-[13px] text-zinc-500">
+          Enter your master password to decrypt your vault.
+        </p>
+        <form onSubmit={submit} className="space-y-3">
           <GlassInput
             type="password"
             placeholder="Master password"
@@ -98,12 +111,12 @@ function UnlockForm() {
             onChange={(e) => setPw(e.target.value)}
             autoFocus
           />
-          {error && <p className="text-sm text-rose-300">{error}</p>}
+          {error && <p className="text-sm text-rose-400">{error}</p>}
           <PrimaryButton type="submit" disabled={busy || !pw} className="w-full py-3">
             {busy ? "Unlocking…" : "Unlock"}
           </PrimaryButton>
         </form>
-      </GlassCard>
+      </GlowCard>
     </div>
   );
 }

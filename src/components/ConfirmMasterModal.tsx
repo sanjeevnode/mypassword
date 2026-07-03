@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { GlassCard, GlassInput, PrimaryButton, GhostButton } from "./ui";
+import { ShieldCheck } from "lucide-react";
+import { GlassInput, PrimaryButton, GhostButton } from "./ui";
 
 export default function ConfirmMasterModal({
   onConfirm,
@@ -27,11 +28,13 @@ export default function ConfirmMasterModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <GlassCard className="w-full max-w-sm bg-[#221040]/90 p-6 text-center">
-        <div className="mb-2 text-4xl">🛡️</div>
-        <h3 className="mb-1 text-lg font-bold text-white">Confirm it&apos;s you</h3>
-        <p className="mb-4 text-sm text-purple-200/70">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div className="panel glow-border w-full max-w-sm rounded-2xl p-6 text-center">
+        <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <ShieldCheck size={19} />
+        </div>
+        <h3 className="text-base font-bold tracking-tight text-white">Confirm it&apos;s you</h3>
+        <p className="mt-1 mb-4 text-[13px] text-zinc-500">
           Enter your master password to view sensitive data.
         </p>
         <form onSubmit={submit} className="space-y-3">
@@ -42,7 +45,7 @@ export default function ConfirmMasterModal({
             onChange={(e) => setPw(e.target.value)}
             autoFocus
           />
-          {error && <p className="text-sm text-rose-300">{error}</p>}
+          {error && <p className="text-sm text-rose-400">{error}</p>}
           <div className="flex justify-center gap-2">
             <GhostButton type="button" onClick={onCancel}>
               Cancel
@@ -52,7 +55,7 @@ export default function ConfirmMasterModal({
             </PrimaryButton>
           </div>
         </form>
-      </GlassCard>
+      </div>
     </div>
   );
 }

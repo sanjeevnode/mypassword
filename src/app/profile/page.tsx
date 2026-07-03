@@ -2,12 +2,13 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Download, KeyRound, UserRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useVault } from "@/context/VaultContext";
 import { encryptJson, decryptJson } from "@/lib/crypto";
 import { listEntries, rotateEntries, EntrySecret } from "@/lib/vault";
 import MasterGate from "@/components/MasterGate";
-import { GlassCard, GlassInput, PrimaryButton, GhostButton, Spinner } from "@/components/ui";
+import { GlassCard, GlassInput, PrimaryButton, GhostButton, Spinner, SectionLabel } from "@/components/ui";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
@@ -21,13 +22,22 @@ export default function ProfilePage() {
 
   return (
     <MasterGate>
-      <div className="mx-auto max-w-2xl space-y-6">
-        <GlassCard className="p-6">
-          <h2 className="text-lg font-bold text-white">Account</h2>
-          <p className="mt-1 text-sm text-purple-200/70">
-            Signed in as <span className="text-purple-100">{user.email}</span>
-          </p>
+      <div className="mx-auto max-w-2xl space-y-5">
+        <div>
+          <SectionLabel>Settings</SectionLabel>
+          <h1 className="mt-1 text-2xl font-bold tracking-tight text-white">Profile</h1>
+        </div>
+
+        <GlassCard className="flex items-center gap-4 p-6">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <UserRound size={19} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-white">{user.displayName ?? "Account"}</p>
+            <p className="text-[13px] text-zinc-500">{user.email}</p>
+          </div>
         </GlassCard>
+
         <ChangeMasterPassword uid={user.uid} />
         <ExportVault uid={user.uid} />
       </div>
@@ -81,16 +91,21 @@ function ChangeMasterPassword({ uid }: { uid: string }) {
 
   return (
     <GlassCard className="p-6">
-      <h2 className="text-lg font-bold text-white">Change Master Password</h2>
-      <p className="mt-1 mb-4 text-sm text-purple-200/70">
-        Rotates your encryption key: every stored credential is decrypted locally and re-encrypted
-        with a brand-new key. Do not close this tab while it runs.
+      <div className="mb-1 flex items-center gap-2.5">
+        <KeyRound size={16} className="text-violet-400" />
+        <h2 className="text-base font-bold tracking-tight text-white">Change Master Password</h2>
+      </div>
+      <p className="mb-5 text-[13px] leading-relaxed text-zinc-500">
+        Rotates your encryption key: every credential is decrypted locally and re-encrypted with a
+        brand-new key. Don&apos;t close this tab while it runs.
       </p>
       <form onSubmit={submit} className="space-y-3">
         <GlassInput type="password" placeholder="Current master password" value={current} onChange={(e) => setCurrent(e.target.value)} />
-        <GlassInput type="password" placeholder="New master password (min 10 characters)" value={next} onChange={(e) => setNext(e.target.value)} />
-        <GlassInput type="password" placeholder="Confirm new master password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
-        {msg && <p className={`text-sm ${msg.ok ? "text-emerald-300" : "text-rose-300"}`}>{msg.text}</p>}
+        <div className="grid gap-3 sm:grid-cols-2">
+          <GlassInput type="password" placeholder="New master password" value={next} onChange={(e) => setNext(e.target.value)} />
+          <GlassInput type="password" placeholder="Confirm new password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+        </div>
+        {msg && <p className={`text-sm ${msg.ok ? "text-emerald-400" : "text-rose-400"}`}>{msg.text}</p>}
         <PrimaryButton type="submit" disabled={busy || !current || !next}>
           {busy ? "Re-encrypting vault…" : "Change & Re-encrypt"}
         </PrimaryButton>
@@ -130,12 +145,16 @@ function ExportVault({ uid }: { uid: string }) {
 
   return (
     <GlassCard className="p-6">
-      <h2 className="text-lg font-bold text-white">Export vault</h2>
-      <p className="mt-1 mb-4 text-sm text-purple-200/70">
+      <div className="mb-1 flex items-center gap-2.5">
+        <Download size={16} className="text-violet-400" />
+        <h2 className="text-base font-bold tracking-tight text-white">Export vault</h2>
+      </div>
+      <p className="mb-5 text-[13px] leading-relaxed text-zinc-500">
         Decrypts your vault locally and downloads a JSON backup. The file is plaintext — handle with care.
       </p>
       <GhostButton onClick={exportJson} disabled={busy}>
-        {busy ? "Decrypting…" : "⬇️ Export as JSON"}
+        <Download size={13} />
+        {busy ? "Decrypting…" : "Export as JSON"}
       </GhostButton>
     </GlassCard>
   );
