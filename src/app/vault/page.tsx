@@ -229,13 +229,17 @@ function Dashboard({ uid }: { uid: string }) {
                 )}
 
                 {secret && (
-                  <div className="mt-3 space-y-1 rounded-none border border-white/12 bg-black/50 p-3 text-[13px]">
-                    <p className="truncate text-zinc-300">
-                      <span className="text-zinc-400">user </span>
-                      {secret.username || "—"}
-                    </p>
-                    <p className="break-all font-mono text-violet-200">{secret.password}</p>
-                    {secret.notes && <p className="pt-1 text-xs text-zinc-400">{secret.notes}</p>}
+                  <div className="mt-3 divide-y divide-white/8 border border-white/12 bg-black/50">
+                    <SecretRow label="Username" value={secret.username} />
+                    <SecretRow label="Password" value={secret.password} mono />
+                    {secret.notes && (
+                      <div className="px-3 py-2">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                          Notes
+                        </p>
+                        <p className="mt-0.5 text-xs leading-relaxed text-zinc-300">{secret.notes}</p>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -266,6 +270,42 @@ function Dashboard({ uid }: { uid: string }) {
           onSave={save}
           onClose={() => setModal(null)}
         />
+      )}
+    </div>
+  );
+}
+
+function SecretRow({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    if (!value) return;
+    await navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div className="group flex items-center justify-between gap-3 px-3 py-2">
+      <div className="min-w-0">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-500">{label}</p>
+        <p
+          className={cn(
+            "mt-0.5 truncate text-[13px] text-zinc-100",
+            mono && "font-mono tracking-wide text-violet-200"
+          )}
+        >
+          {value || "—"}
+        </p>
+      </div>
+      {value && (
+        <button
+          onClick={copy}
+          title={`Copy ${label.toLowerCase()}`}
+          className="shrink-0 p-1.5 text-zinc-500 opacity-0 transition hover:text-white group-hover:opacity-100"
+        >
+          {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+        </button>
       )}
     </div>
   );
