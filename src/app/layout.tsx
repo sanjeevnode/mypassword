@@ -11,9 +11,9 @@ const geistSans = Geist({
 });
 
 const SITE_URL = "https://mypassword.sanjeevnode.in";
-const TITLE = "MyPassword — The Password Manager That Knows Nothing";
+const TITLE = "MyPassword — Zero-Knowledge Password Manager";
 const DESCRIPTION =
-  "Zero-knowledge password manager. Every credential is encrypted with AES-256-GCM in your browser using Argon2id key derivation — your master password and secrets never leave your device.";
+  "Free, open-source password vault with zero-knowledge security. AES-256 encryption runs in your browser — only your master password can open your vault.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

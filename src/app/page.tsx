@@ -32,7 +32,10 @@ export default function Home() {
     if (!loading && user) router.replace("/vault");
   }, [loading, user, router]);
 
-  if (loading) return <PageLoader label="Signing you in…" />;
+  // only hide the page when we know a signed-in user is being redirected —
+  // during prerender (loading=true, user=null) the full hero must be in the
+  // HTML so crawlers see the H1 and headings
+  if (user) return <PageLoader label="Opening your vault…" />;
 
   return (
     <div className="relative">
@@ -149,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* product preview frame — aceternity style browser mock */}
-      <section className="mx-auto max-w-5xl pb-20">
+      <section id="preview" className="mx-auto max-w-5xl pb-20">
         <div className="panel overflow-hidden rounded-none">
           {/* chrome bar */}
           <div className="flex items-center gap-3 border-b border-white/[0.06] bg-black/50 px-4 py-3">
@@ -211,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* bento features */}
-      <section className="mx-auto max-w-5xl pb-20">
+      <section id="features" className="mx-auto max-w-5xl pb-20">
         <div className="mb-10 max-w-xl">
           <SectionLabel>Features</SectionLabel>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-white md:text-4xl">
@@ -282,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* how it works */}
-      <section className="mx-auto max-w-5xl pb-20">
+      <section id="how-it-works" className="mx-auto max-w-5xl pb-20">
         <div className="mb-10 max-w-xl">
           <SectionLabel>How it works</SectionLabel>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-white md:text-4xl">
@@ -309,7 +312,7 @@ export default function Home() {
       </section>
 
       {/* final CTA */}
-      <section className="mx-auto max-w-5xl pb-16">
+      <section id="get-started" className="mx-auto max-w-5xl pb-16">
         <div className="panel glow-border relative overflow-hidden rounded-none p-10 text-center md:p-16">
           <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-violet-600/20 blur-3xl" />
           <div className="relative">
@@ -340,7 +343,19 @@ export default function Home() {
             My<span className="text-violet-400/80">Password</span> — zero-knowledge vault
           </span>
         </div>
-        <div className="flex items-center gap-5">
+        <nav className="flex flex-wrap items-center gap-5" aria-label="Footer">
+          <a href="#preview" className="transition hover:text-zinc-300">
+            Preview
+          </a>
+          <a href="#features" className="transition hover:text-zinc-300">
+            Features
+          </a>
+          <a href="#how-it-works" className="transition hover:text-zinc-300">
+            How it works
+          </a>
+          <a href="#get-started" className="transition hover:text-zinc-300">
+            Get started
+          </a>
           <a
             href="https://github.com/sanjeevnode/mypassword"
             target="_blank"
@@ -352,7 +367,7 @@ export default function Home() {
           <span className="flex items-center gap-1.5">
             <KeyRound size={12} className="text-violet-500/70" /> AES-256 · Argon2id
           </span>
-        </div>
+        </nav>
       </footer>
     </div>
   );
