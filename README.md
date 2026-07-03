@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔐 MyPassword — Zero-Knowledge Password Vault
 
-## Getting Started
+A password manager built with Next.js, Firebase, and Vercel. All cryptography runs **in the browser** — the master password, encryption keys, and plaintext secrets never leave your device.
 
-First, run the development server:
+## Security model (envelope encryption)
+
+- A random 256-bit **data key** encrypts every vault entry with **AES-256-GCM**.
+- Your **master password** derives two values via **Argon2id** (64 MiB, 3 iterations), each with an independent random salt:
+  - a **verifier hash** — stored in Firestore, used only to check login attempts
+  - a **master key** — never persisted; it "wraps" (encrypts) the data key
+- Firestore only ever stores: the verifier, salts, the wrapped data key, and AES-GCM ciphertext.
+- Changing the master password performs a **full rotation**: a new data key is generated and every entry is decrypted and re-encrypted locally.
+- The vault auto-locks after 10 minutes of inactivity (key is discarded from memory).
+
+⚠️ Zero-knowledge means **a forgotten master password is unrecoverable** — there is no reset.
+
+## Setup
+
+### 1. Firebase
+
+1. Go to [console.firebase.google.com](https://console.firebase.google.com) → **Add project** (Analytics optional).
+2. **Authentication → Sign-in method → Google → Enable** (set a support email).
+3. **Firestore Database → Create database** (production mode, pick a region).
+4. **Firestore → Rules** → paste the contents of [`firestore.rules`](firestore.rules) → Publish.
+5. **Project settings → Your apps → Web (`</>`)** → register an app → copy the config values.
+
+### 2. Local environment
 
 ```bash
+cp .env.local.example .env.local   # then fill in the Firebase config values
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this repo to GitHub and import it at [vercel.com/new](https://vercel.com/new).
+2. Add the same `NEXT_PUBLIC_FIREBASE_*` env vars in the Vercel project settings.
+3. Deploy, then add your Vercel domain to **Firebase → Authentication → Settings → Authorized domains**.
 
-## Learn More
+## Tech stack
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 15 (App Router) + TypeScript
+- Tailwind CSS v4 — purple glassmorphism UI
+- Firebase Auth (Google) + Firestore (client SDK, rules-enforced per-user access)
+- [`hash-wasm`](https://github.com/Daninet/hash-wasm) for Argon2id, WebCrypto for AES-256-GCM
