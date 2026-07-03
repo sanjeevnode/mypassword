@@ -88,6 +88,17 @@ export async function deleteEntry(uid: string, id: string): Promise<void> {
   await deleteDoc(doc(fbDb(), "users", uid, "passwords", id));
 }
 
+/** Bulk delete, batched under Firestore's 500-writes-per-batch cap. */
+export async function deleteEntries(uid: string, ids: string[]): Promise<void> {
+  for (let i = 0; i < ids.length; i += 450) {
+    const batch = writeBatch(fbDb());
+    for (const id of ids.slice(i, i + 450)) {
+      batch.delete(doc(fbDb(), "users", uid, "passwords", id));
+    }
+    await batch.commit();
+  }
+}
+
 /** Batch-write re-encrypted blobs during master password rotation. */
 export async function rotateEntries(
   uid: string,

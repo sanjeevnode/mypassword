@@ -9,9 +9,11 @@ import {
   Copy,
   Eye,
   EyeOff,
+  CheckSquare,
   Globe,
   KeyRound,
   Loader2,
+  Square,
   Pencil,
   Plus,
   Search,
@@ -27,6 +29,7 @@ import {
   addEntry,
   updateEntry,
   deleteEntry,
+  deleteEntries,
 } from "@/lib/vault";
 import MasterGate from "@/components/MasterGate";
 import EntryModal, { EntryFormValue } from "@/components/EntryModal";
@@ -62,6 +65,10 @@ function Dashboard({ uid }: { uid: string }) {
   const [page, setPage] = useState(1);
   // which entry+action is currently working, e.g. "abc123:reveal"
   const [pending, setPending] = useState<string | null>(null);
+  // multi-select delete mode
+  const [selectMode, setSelectMode] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const withPending = async (key: string, fn: () => Promise<void>) => {
     setPending(key);
@@ -169,6 +176,34 @@ function Dashboard({ uid }: { uid: string }) {
     });
   };
 
+  const toggleSelect = (id: string) => {
+    setSelected((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const exitSelectMode = () => {
+    setSelectMode(false);
+    setSelected(new Set());
+  };
+
+  const bulkDelete = async () => {
+    if (selected.size === 0) return;
+    if (!confirm(`Delete ${selected.size} credential${selected.size === 1 ? "" : "s"}? This cannot be undone.`))
+      return;
+    setBulkDeleting(true);
+    try {
+      await deleteEntries(uid, [...selected]);
+      exitSelectMode();
+      await reload();
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
   if (!entries) return <PageLoader label="Fetching credentials…" />;
 
   return (
@@ -180,9 +215,25 @@ function Dashboard({ uid }: { uid: string }) {
             {entries.length} credential{entries.length === 1 ? "" : "s"}
           </h1>
         </div>
-        <PrimaryButton onClick={() => setModal({})}>
-          <Plus size={15} /> New credential
-        </PrimaryButton>
+        <div className="flex items-center gap-2">
+          {entries.length > 0 && (
+            <button
+              onClick={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-none px-3.5 py-2.5 text-sm font-medium transition",
+                selectMode
+                  ? "border border-violet-400/60 bg-violet-600/25 text-white"
+                  : "btn-ghost text-zinc-200 hover:text-white"
+              )}
+            >
+              <CheckSquare size={14} />
+              {selectMode ? "Cancel" : "Select"}
+            </button>
+          )}
+          <PrimaryButton onClick={() => setModal({})}>
+            <Plus size={15} /> New credential
+          </PrimaryButton>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -224,13 +275,39 @@ function Dashboard({ uid }: { uid: string }) {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {paged.map((entry) => {
             const secret = revealed[entry.id];
+            const isSelected = selected.has(entry.id);
             return (
-              <GlowCard key={entry.id} className="flex flex-col p-4">
+              <GlowCard
+                key={entry.id}
+                className={cn(
+                  "flex flex-col p-4",
+                  selectMode && "cursor-pointer",
+                  selectMode && isSelected && "border-violet-400/70! bg-violet-600/10"
+                )}
+              >
+                {selectMode && (
+                  <button
+                    onClick={() => toggleSelect(entry.id)}
+                    className="absolute inset-0 z-10"
+                    aria-label={isSelected ? "Deselect" : "Select"}
+                  />
+                )}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-violet-500/15 text-sm font-bold text-violet-200">
-                      {entry.site.charAt(0).toUpperCase()}
-                    </div>
+                    {selectMode ? (
+                      <div
+                        className={cn(
+                          "flex h-9 w-9 shrink-0 items-center justify-center rounded-none",
+                          isSelected ? "bg-violet-600 text-white" : "bg-white/6 text-zinc-400"
+                        )}
+                      >
+                        {isSelected ? <CheckSquare size={16} /> : <Square size={16} />}
+                      </div>
+                    ) : (
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-violet-500/15 text-sm font-bold text-violet-200">
+                        {entry.site.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <div className="min-w-0">
                       <h3 className="truncate text-sm font-semibold text-white">{entry.site}</h3>
                       {entry.url && (
@@ -345,6 +422,42 @@ function Dashboard({ uid }: { uid: string }) {
           >
             Next <ChevronRight size={13} />
           </button>
+        </div>
+      )}
+
+      {selectMode && (
+        <div className="fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+          <div className="flex flex-wrap items-center gap-3 border border-violet-500/30 bg-[#0e0c16] px-5 py-3 shadow-[0_10px_40px_rgba(0,0,0,0.7)]">
+            <span className="text-sm font-medium text-white">
+              {selected.size} selected
+            </span>
+            <span className="h-4 w-px bg-white/15" />
+            <button
+              onClick={() => setSelected(new Set(filtered.map((e) => e.id)))}
+              className="text-xs font-medium text-zinc-300 transition hover:text-white"
+            >
+              Select all ({filtered.length})
+            </button>
+            <button
+              onClick={() => setSelected(new Set())}
+              className="text-xs font-medium text-zinc-300 transition hover:text-white"
+            >
+              Clear
+            </button>
+            <span className="h-4 w-px bg-white/15" />
+            <button
+              onClick={bulkDelete}
+              disabled={bulkDeleting || selected.size === 0}
+              className="inline-flex items-center gap-2 border border-rose-500/40 bg-rose-500/15 px-4 py-2 text-xs font-semibold text-rose-300 transition hover:bg-rose-500/25 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {bulkDeleting ? (
+                <Loader2 size={13} className="animate-spin" />
+              ) : (
+                <Trash2 size={13} />
+              )}
+              {bulkDeleting ? "Deleting…" : "Delete selected"}
+            </button>
+          </div>
         </div>
       )}
 
