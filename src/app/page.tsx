@@ -36,7 +36,7 @@ export default function Home() {
       <Spotlight className="-top-40 left-0 md:-top-20 md:left-40" />
 
       {/* hero — left aligned, aceternity style */}
-      <section className="relative mx-auto grid max-w-5xl items-center gap-10 pb-16 pt-20 md:grid-cols-[1.2fr_0.8fr] md:pt-28">
+      <section className="relative mx-auto grid max-w-5xl items-center gap-10 pb-14 pt-8 md:grid-cols-[1.2fr_0.8fr] md:pt-12">
         <div>
           <div className="mb-7 inline-flex items-center gap-2.5 rounded-none border border-white/10 bg-white/[0.04] py-1 pl-1.5 pr-3 text-xs font-medium text-zinc-300">
             <span className="rounded-none bg-violet-600 px-2 py-0.5 text-[11px] font-semibold text-white">
