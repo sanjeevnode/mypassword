@@ -43,7 +43,7 @@ export default function Home() {
               Security
             </span>
             Zero-knowledge encryption
-            <ArrowRight size={12} className="text-zinc-500" />
+            <ArrowRight size={12} className="text-zinc-400" />
           </div>
 
           <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl">
@@ -52,7 +52,7 @@ export default function Home() {
             <span className="text-violet-400">end to end.</span>
           </h1>
 
-          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-zinc-400">
+          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-zinc-300">
             Every credential is sealed with AES-256 in your browser before it touches a server. Not
             us, not Google, not anyone can read your vault — only your master password can open it.
           </p>
@@ -76,7 +76,7 @@ export default function Home() {
         </div>
 
         <div className="hidden md:block">
-          <div className="space-y-4 text-sm text-zinc-400">
+          <div className="space-y-4 text-sm text-zinc-300">
             <p className="leading-relaxed">
               Built on the same model trusted by leading password managers — envelope encryption
               with Argon2id key derivation.
@@ -86,7 +86,7 @@ export default function Home() {
                 <Star key={i} size={14} fill="currentColor" />
               ))}
             </div>
-            <ul className="space-y-2 text-[13px] text-zinc-500">
+            <ul className="space-y-2 text-[13px] text-zinc-400">
               <li className="flex items-center gap-2">
                 <ShieldCheck size={14} className="text-violet-400" /> Argon2id · 64 MiB memory-hard KDF
               </li>
@@ -111,7 +111,7 @@ export default function Home() {
               <span className="h-3 w-3 rounded-full bg-amber-500/80" />
               <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
             </div>
-            <div className="ml-2 flex items-center gap-2 rounded-none border border-white/[0.07] bg-white/[0.03] px-3 py-1 text-[11px] text-zinc-500">
+            <div className="ml-2 flex items-center gap-2 rounded-none border border-white/[0.07] bg-white/[0.03] px-3 py-1 text-[11px] text-zinc-400">
               <Lock size={10} className="text-violet-400" />
               mypassword.sanjeevnode.in/vault
             </div>
@@ -139,7 +139,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-[13px] font-semibold text-white">{m.site}</p>
-                      <p className="text-[10px] text-zinc-600">{m.url}</p>
+                      <p className="text-[10px] text-zinc-500">{m.url}</p>
                     </div>
                   </div>
                   <div className="mt-3 flex gap-1">
@@ -148,10 +148,10 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="mt-3 flex items-center justify-between rounded-none border border-white/[0.06] bg-black/40 px-3 py-2">
-                    <span className="font-mono text-xs tracking-widest text-zinc-600">
+                    <span className="font-mono text-xs tracking-widest text-zinc-500">
                       ••••••••••••
                     </span>
-                    <span className="flex gap-2 text-zinc-600">
+                    <span className="flex gap-2 text-zinc-500">
                       <Eye size={12} />
                       <Copy size={12} />
                     </span>
@@ -169,18 +169,18 @@ export default function Home() {
           <SectionLabel>Features</SectionLabel>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-white md:text-4xl">
             Everything a vault should do.
-            <span className="text-zinc-500"> Nothing it shouldn&apos;t see.</span>
+            <span className="text-zinc-400"> Nothing it shouldn&apos;t see.</span>
           </h2>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* encryption pipeline — wide card */}
           <GlowCard className="p-6 sm:col-span-2">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
               <Lock size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Client-side encryption pipeline</h3>
-            <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-zinc-500">
+            <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-zinc-400">
               Your master password never leaves the browser. It derives keys locally; only
               ciphertext ever crosses the network.
             </p>
@@ -188,11 +188,11 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
               <TimerReset size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Locks itself</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-500">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">
               Auto-locks after 5 idle minutes, 60 seconds in a hidden tab, and wipes keys from
               memory instantly.
             </p>
@@ -200,33 +200,33 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
               <RefreshCw size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Key rotation</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-500">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">
               Change your master password and every credential is re-encrypted with a brand-new key
               — locally.
             </p>
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
               <Search size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Search & tags</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-500">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">
               Organize credentials with tags and find anything instantly — without decrypting a
               single secret.
             </p>
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
               <FolderKey size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Your data, portable</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-500">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">
               One-click export decrypts your vault locally into JSON. No lock-in, no gatekeeping,
               ever.
             </p>
@@ -272,7 +272,7 @@ export default function Home() {
             <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
               Seal your passwords in black.
             </h2>
-            <p className="mx-auto mt-3 max-w-md text-sm text-zinc-400">
+            <p className="mx-auto mt-3 max-w-md text-sm text-zinc-300">
               Free, open source, zero-knowledge. Your first credential is 30 seconds away.
             </p>
             <button
@@ -286,7 +286,7 @@ export default function Home() {
       </section>
 
       {/* footer */}
-      <footer className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] py-8 text-xs text-zinc-600">
+      <footer className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] py-8 text-xs text-zinc-500">
         <div className="flex items-center gap-2">
           <Logo size={20} />
           <span>
@@ -336,7 +336,7 @@ function PipeNode({ label, sub, accent }: { label: string; sub: string; accent?:
       }
     >
       {label}
-      <div className="text-[10px] font-normal text-zinc-500">{sub}</div>
+      <div className="text-[10px] font-normal text-zinc-400">{sub}</div>
     </div>
   );
 }
@@ -354,7 +354,7 @@ function LockMeter() {
         { label: "tab hidden", w: "w-1/4" },
       ].map((r) => (
         <div key={r.label} className="flex items-center gap-2">
-          <span className="w-16 text-[10px] text-zinc-600">{r.label}</span>
+          <span className="w-16 text-[10px] text-zinc-500">{r.label}</span>
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.05]">
             <div className={`h-full ${r.w} rounded-full bg-gradient-to-r from-violet-600 to-violet-400`} />
           </div>
@@ -372,7 +372,7 @@ function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
         {n}
       </span>
       <h3 className="mt-4 text-sm font-semibold text-white">{title}</h3>
-      <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-500">{desc}</p>
+      <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">{desc}</p>
     </div>
   );
 }

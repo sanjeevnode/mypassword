@@ -29,12 +29,12 @@ export default function ProfilePage() {
         </div>
 
         <GlassCard className="flex items-center gap-4 p-6">
-          <div className="flex h-11 w-11 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
             <UserRound size={19} />
           </div>
           <div>
             <p className="text-sm font-semibold text-white">{user.displayName ?? "Account"}</p>
-            <p className="text-[13px] text-zinc-500">{user.email}</p>
+            <p className="text-[13px] text-zinc-400">{user.email}</p>
           </div>
         </GlassCard>
 
@@ -95,7 +95,7 @@ function ChangeMasterPassword({ uid }: { uid: string }) {
         <KeyRound size={16} className="text-violet-400" />
         <h2 className="text-base font-bold tracking-tight text-white">Change Master Password</h2>
       </div>
-      <p className="mb-5 text-[13px] leading-relaxed text-zinc-500">
+      <p className="mb-5 text-[13px] leading-relaxed text-zinc-400">
         Rotates your encryption key: every credential is decrypted locally and re-encrypted with a
         brand-new key. Don&apos;t close this tab while it runs.
       </p>
@@ -149,7 +149,7 @@ function ExportVault({ uid }: { uid: string }) {
         <Download size={16} className="text-violet-400" />
         <h2 className="text-base font-bold tracking-tight text-white">Export vault</h2>
       </div>
-      <p className="mb-5 text-[13px] leading-relaxed text-zinc-500">
+      <p className="mb-5 text-[13px] leading-relaxed text-zinc-400">
         Decrypts your vault locally and downloads a JSON backup. The file is plaintext — handle with care.
       </p>
       <GhostButton onClick={exportJson} disabled={busy}>

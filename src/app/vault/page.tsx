@@ -151,7 +151,7 @@ function Dashboard({ uid }: { uid: string }) {
 
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative w-full max-w-sm">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
           <GlassInput
             placeholder="Search site or URL…"
             value={query}
@@ -175,10 +175,10 @@ function Dashboard({ uid }: { uid: string }) {
 
       {filtered.length === 0 ? (
         <GlassCard className="flex flex-col items-center gap-3 p-14 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <div className="flex h-12 w-12 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
             <KeyRound size={20} />
           </div>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-zinc-300">
             {entries.length === 0
               ? "Your vault is empty. Add your first credential."
               : "No entries match your search."}
@@ -192,7 +192,7 @@ function Dashboard({ uid }: { uid: string }) {
               <GlowCard key={entry.id} className="flex flex-col p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none border border-white/15 bg-white/8 text-sm font-bold text-violet-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-violet-500/15 text-sm font-bold text-violet-200">
                       {entry.site.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -202,7 +202,7 @@ function Dashboard({ uid }: { uid: string }) {
                           href={entry.url.startsWith("http") ? entry.url : `https://${entry.url}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center gap-1 truncate text-[11px] text-zinc-400 hover:text-violet-300"
+                          className="flex items-center gap-1 truncate text-[11px] text-zinc-300 hover:text-violet-300"
                         >
                           <Globe size={10} className="shrink-0" />
                           <span className="truncate">{entry.url}</span>
@@ -231,15 +231,15 @@ function Dashboard({ uid }: { uid: string }) {
                 {secret && (
                   <div className="mt-3 space-y-1 rounded-none border border-white/12 bg-black/50 p-3 text-[13px]">
                     <p className="truncate text-zinc-300">
-                      <span className="text-zinc-500">user </span>
+                      <span className="text-zinc-400">user </span>
                       {secret.username || "—"}
                     </p>
                     <p className="break-all font-mono text-violet-200">{secret.password}</p>
-                    {secret.notes && <p className="pt-1 text-xs text-zinc-500">{secret.notes}</p>}
+                    {secret.notes && <p className="pt-1 text-xs text-zinc-400">{secret.notes}</p>}
                   </div>
                 )}
 
-                <div className="mt-auto flex gap-1.5 pt-4">
+                <div className="mt-4 -mx-4 -mb-4 flex divide-x divide-white/8 border-t border-white/8">
                   <ActionBtn onClick={() => reveal(entry)}>
                     {secret ? <EyeOff size={13} /> : <Eye size={13} />}
                     {secret ? "Hide" : "Reveal"}
@@ -284,10 +284,10 @@ function TagPill({
     <button
       onClick={onClick}
       className={cn(
-        "rounded-none px-3 py-1 text-xs font-medium transition",
+        "field rounded-none px-4 py-2.5 text-xs font-medium transition",
         active
-          ? "border border-violet-500/40 bg-violet-500/20 text-violet-200"
-          : "border border-white/15 bg-white/6 text-zinc-300 hover:border-violet-500/40 hover:text-white"
+          ? "border-violet-400/70! bg-violet-600/30! text-white"
+          : "text-zinc-300 hover:text-white"
       )}
     >
       {children}
@@ -311,7 +311,7 @@ function IconBtn({
       title={title}
       onClick={onClick}
       className={cn(
-        "rounded-none p-1.5 text-zinc-400 transition hover:bg-white/[0.06]",
+        "rounded-none p-1.5 text-zinc-300 transition hover:bg-white/[0.06]",
         danger ? "hover:text-rose-400" : "hover:text-white"
       )}
     >
@@ -324,7 +324,7 @@ function ActionBtn({ onClick, children }: { onClick: () => void; children: React
   return (
     <button
       onClick={onClick}
-      className="btn-ghost flex flex-1 items-center justify-center gap-1.5 rounded-none px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white"
+      className="flex flex-1 items-center justify-center gap-1.5 rounded-none px-3 py-2 text-xs font-medium text-zinc-300 transition hover:bg-white/6 hover:text-white"
     >
       {children}
     </button>

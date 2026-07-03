@@ -46,7 +46,7 @@ export default function Navbar() {
             <button
               onClick={logOut}
               title="Sign out"
-              className="btn-ghost ml-1 flex items-center gap-1.5 rounded-none px-3 py-1.5 text-xs font-medium text-zinc-400 hover:text-white"
+              className="btn-ghost ml-1 flex items-center gap-1.5 rounded-none px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white"
             >
               <LogOut size={13} />
             </button>
@@ -75,7 +75,7 @@ function NavLink({
         "flex items-center gap-1.5 rounded-none px-3 py-1.5 text-[13px] font-medium transition",
         active
           ? "bg-violet-500/15 text-violet-300"
-          : "text-zinc-400 hover:bg-white/[0.04] hover:text-white"
+          : "text-zinc-300 hover:bg-white/[0.04] hover:text-white"
       )}
     >
       {icon}

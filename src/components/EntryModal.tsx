@@ -65,7 +65,7 @@ export default function EntryModal({
               {initial ? "Edit credential" : "Add credential"}
             </h3>
           </div>
-          <button onClick={onClose} className="rounded-none p-1.5 text-zinc-500 transition hover:bg-white/5 hover:text-white">
+          <button onClick={onClose} className="rounded-none p-1.5 text-zinc-400 transition hover:bg-white/5 hover:text-white">
             <X size={16} />
           </button>
         </div>
@@ -86,7 +86,7 @@ export default function EntryModal({
             <button
               type="button"
               onClick={() => setShowPw((s) => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 transition hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 transition hover:text-white"
             >
               {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
             </button>

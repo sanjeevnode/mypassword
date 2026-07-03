@@ -43,14 +43,14 @@ function SetupForm() {
   return (
     <div className="flex min-h-[65vh] items-center justify-center">
       <GlowCard className="glow-border w-full max-w-md p-8">
-        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
           <ShieldCheck size={20} />
         </div>
         <SectionLabel>One-time setup</SectionLabel>
         <h2 className="mt-1 text-xl font-bold tracking-tight text-white">
           Create your Master Password
         </h2>
-        <p className="mt-2 mb-6 text-[13px] leading-relaxed text-zinc-500">
+        <p className="mt-2 mb-6 text-[13px] leading-relaxed text-zinc-400">
           This single password protects your entire vault and never leaves this device.{" "}
           <span className="text-zinc-300">If you forget it, your data cannot be recovered.</span>
         </p>
@@ -96,11 +96,11 @@ function UnlockForm() {
   return (
     <div className="flex min-h-[65vh] items-center justify-center">
       <GlowCard className="glow-border w-full max-w-sm p-8 text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none bg-violet-500/15 text-violet-300">
           <Lock size={20} />
         </div>
         <h2 className="text-lg font-bold tracking-tight text-white">Vault is locked</h2>
-        <p className="mt-1 mb-6 text-[13px] text-zinc-500">
+        <p className="mt-1 mb-6 text-[13px] text-zinc-400">
           Enter your master password to decrypt your vault.
         </p>
         <form onSubmit={submit} className="space-y-3">
