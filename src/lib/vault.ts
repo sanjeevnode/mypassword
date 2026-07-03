@@ -21,6 +21,7 @@ export interface UserVaultDoc {
   encSalt: string; // base64
   verifier: string; // base64 argon2id output
   wrappedKey: WrappedKey;
+  rotations?: number; // master password change count (metadata only)
   createdAt?: unknown;
   updatedAt?: unknown;
 }
@@ -58,8 +59,12 @@ export async function createUserVault(uid: string, data: UserVaultDoc): Promise<
   await setDoc(userRef(uid), { ...data, createdAt: serverTimestamp() });
 }
 
-export async function updateUserVault(uid: string, data: Partial<UserVaultDoc>): Promise<void> {
-  await updateDoc(userRef(uid), { ...data, updatedAt: serverTimestamp() });
+export async function updateUserVault(
+  uid: string,
+  data: Partial<UserVaultDoc>,
+  extra?: Record<string, unknown>
+): Promise<void> {
+  await updateDoc(userRef(uid), { ...data, ...extra, updatedAt: serverTimestamp() });
 }
 
 export async function listEntries(uid: string): Promise<Entry[]> {

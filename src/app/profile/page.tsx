@@ -2,7 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Download, FileSpreadsheet, KeyRound, Upload, UserRound } from "lucide-react";
+import { Download, FileSpreadsheet, KeyRound, Trash2, Upload, UserRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useVault } from "@/context/VaultContext";
 import { encryptJson, decryptJson } from "@/lib/crypto";
@@ -42,6 +42,7 @@ export default function ProfilePage() {
         <ChangeMasterPassword uid={user.uid} />
         <ImportCsv uid={user.uid} />
         <ExportVault uid={user.uid} />
+        <DangerZone />
       </div>
     </MasterGate>
   );
@@ -237,6 +238,74 @@ function ExportVault({ uid }: { uid: string }) {
         <Download size={13} />
         {busy ? "Decrypting…" : "Export as CSV"}
       </GhostButton>
+    </GlassCard>
+  );
+}
+
+function DangerZone() {
+  const { user, logOut } = useAuth();
+  const { requireConfirmation } = useVault();
+  const router = useRouter();
+  const [phrase, setPhrase] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const deleteAccount = async () => {
+    if (!user || phrase !== "DELETE") return;
+    // gate 1: master password re-confirmation
+    if (!(await requireConfirmation())) return;
+    // gate 2: final native confirm
+    if (
+      !confirm(
+        "FINAL WARNING: this permanently deletes your account and every stored credential. There is no undo and no recovery. Continue?"
+      )
+    )
+      return;
+    setBusy(true);
+    setError("");
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch("/api/account", {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error((await res.json()).error ?? `HTTP ${res.status}`);
+      await logOut();
+      router.replace("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Deletion failed.");
+      setBusy(false);
+    }
+  };
+
+  return (
+    <GlassCard className="border-rose-500/30! p-6">
+      <div className="mb-1 flex items-center gap-2.5">
+        <Trash2 size={16} className="text-rose-400" />
+        <h2 className="text-base font-bold tracking-tight text-white">Delete account</h2>
+      </div>
+      <p className="mb-5 text-[13px] leading-relaxed text-zinc-400">
+        Permanently deletes your account, your vault keys, and every stored credential.{" "}
+        <span className="text-rose-300">This cannot be undone</span> — export a CSV backup first if
+        you might need your passwords again.
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        <GlassInput
+          placeholder='Type "DELETE" to confirm'
+          value={phrase}
+          onChange={(e) => setPhrase(e.target.value)}
+          className="max-w-55"
+        />
+        <button
+          onClick={deleteAccount}
+          disabled={busy || phrase !== "DELETE"}
+          className="inline-flex items-center gap-2 border border-rose-500/40 bg-rose-500/15 px-4 py-2.5 text-sm font-semibold text-rose-300 transition hover:bg-rose-500/25 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Trash2 size={13} />
+          {busy ? "Deleting everything…" : "Delete my account"}
+        </button>
+      </div>
+      {error && <p className="mt-3 text-sm text-rose-400">{error}</p>}
     </GlassCard>
   );
 }

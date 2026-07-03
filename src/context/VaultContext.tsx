@@ -17,6 +17,7 @@ import {
   fromB64,
   constantTimeEqual,
 } from "@/lib/crypto";
+import { increment } from "firebase/firestore";
 import { getUserVault, createUserVault, updateUserVault, UserVaultDoc } from "@/lib/vault";
 import ConfirmMasterModal from "@/components/ConfirmMasterModal";
 
@@ -185,7 +186,7 @@ export function VaultProvider({ children }: { children: ReactNode }) {
         verifier,
         wrappedKey,
       };
-      await updateUserVault(user.uid, docData);
+      await updateUserVault(user.uid, docData, { rotations: increment(1) });
       setVaultDoc((v) => (v ? { ...v, ...docData } : v));
       setDataKey(newDataKey);
       setStatus("unlocked");

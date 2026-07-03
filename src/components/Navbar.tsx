@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Lock, LogOut, ShieldCheck, User } from "lucide-react";
+import { Gauge, Lock, LogOut, ShieldCheck, User } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useVault } from "@/context/VaultContext";
 import { cn } from "@/lib/utils";
@@ -33,6 +33,12 @@ export default function Navbar() {
             <NavLink href="/profile" active={pathname === "/profile"} icon={<User size={14} />}>
               Profile
             </NavLink>
+            {!!process.env.NEXT_PUBLIC_ADMIN_EMAIL &&
+              user.email?.toLowerCase() === process.env.NEXT_PUBLIC_ADMIN_EMAIL.toLowerCase() && (
+                <NavLink href="/admin" active={pathname === "/admin"} icon={<Gauge size={14} />}>
+                  Admin
+                </NavLink>
+              )}
             <div className="mx-2 h-5 w-px bg-white/10" />
             {status === "unlocked" && (
               <button

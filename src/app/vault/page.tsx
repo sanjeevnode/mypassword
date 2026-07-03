@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Check,
+  ChevronLeft,
+  ChevronRight,
   Copy,
   Eye,
   EyeOff,
@@ -56,6 +58,7 @@ function Dashboard({ uid }: { uid: string }) {
   const [modal, setModal] = useState<null | { entry?: Entry; secret?: EntrySecret }>(null);
   const [revealed, setRevealed] = useState<Record<string, EntrySecret>>({});
   const [copied, setCopied] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   const reload = useCallback(async () => {
     setEntries(await listEntries(uid));
@@ -79,6 +82,19 @@ function Dashboard({ uid }: { uid: string }) {
       .filter((e) => !q || e.site.toLowerCase().includes(q) || e.url.toLowerCase().includes(q))
       .sort((a, b) => a.site.localeCompare(b.site));
   }, [entries, query, activeTag]);
+
+  const PAGE_SIZE = 12;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filtered, safePage]
+  );
+
+  // jump back to page 1 whenever the result set changes shape
+  useEffect(() => {
+    setPage(1);
+  }, [query, activeTag]);
 
   const save = async (v: EntryFormValue) => {
     if (!dataKey) throw new Error("Vault is locked.");
@@ -186,7 +202,7 @@ function Dashboard({ uid }: { uid: string }) {
         </GlassCard>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((entry) => {
+          {paged.map((entry) => {
             const secret = revealed[entry.id];
             return (
               <GlowCard key={entry.id} className="flex flex-col p-4">
@@ -260,6 +276,39 @@ function Dashboard({ uid }: { uid: string }) {
               </GlowCard>
             );
           })}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-1.5 pt-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={safePage === 1}
+            className="btn-ghost flex items-center gap-1 rounded-none px-3 py-2 text-xs font-medium text-zinc-300 hover:text-white disabled:opacity-40"
+          >
+            <ChevronLeft size={13} /> Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+            <button
+              key={n}
+              onClick={() => setPage(n)}
+              className={cn(
+                "min-w-9 px-2.5 py-2 text-xs font-medium transition",
+                n === safePage
+                  ? "bg-violet-600/30 text-white outline outline-violet-400/60"
+                  : "text-zinc-400 hover:bg-white/6 hover:text-white"
+              )}
+            >
+              {n}
+            </button>
+          ))}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={safePage === totalPages}
+            className="btn-ghost flex items-center gap-1 rounded-none px-3 py-2 text-xs font-medium text-zinc-300 hover:text-white disabled:opacity-40"
+          >
+            Next <ChevronRight size={13} />
+          </button>
         </div>
       )}
 
