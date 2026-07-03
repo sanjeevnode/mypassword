@@ -49,7 +49,7 @@ export function PrimaryButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       {...rest}
       className={cn(
-        "btn-shimmer inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-violet-50",
+        "btn-solid inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white",
         className
       )}
     />

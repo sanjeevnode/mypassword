@@ -84,6 +84,28 @@ body {
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
+/* solid primary button — aceternity's white CTA, in purple */
+.btn-solid {
+  background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+  border: 1px solid rgba(196, 167, 255, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 16px -4px rgba(124, 58, 237, 0.5);
+  transition: filter 0.15s, transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-solid:hover:not(:disabled) {
+  filter: brightness(1.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 24px -4px rgba(124, 58, 237, 0.7);
+}
+
+.btn-solid:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-solid:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* aceternity-style shimmer button */
 .btn-shimmer {
   background-image: linear-gradient(110deg, #1b1030 0%, 45%, #4c2a9e 55%, #1b1030 100%);
