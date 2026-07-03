@@ -35,7 +35,7 @@ export default function VaultPage() {
 }
 
 function Dashboard({ uid }: { uid: string }) {
-  const { dataKey } = useVault();
+  const { dataKey, requireConfirmation } = useVault();
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -92,12 +92,14 @@ function Dashboard({ uid }: { uid: string }) {
       });
       return;
     }
+    if (!(await requireConfirmation())) return;
     const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
     setRevealed((r) => ({ ...r, [entry.id]: secret }));
   };
 
   const copyPassword = async (entry: Entry) => {
     if (!dataKey) return;
+    if (!(await requireConfirmation())) return;
     const secret = revealed[entry.id] ?? (await decryptJson<EntrySecret>(dataKey, entry.blob));
     await navigator.clipboard.writeText(secret.password);
     setCopied(entry.id);
@@ -106,6 +108,7 @@ function Dashboard({ uid }: { uid: string }) {
 
   const edit = async (entry: Entry) => {
     if (!dataKey) return;
+    if (!(await requireConfirmation())) return;
     const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
     setModal({ entry, secret });
   };

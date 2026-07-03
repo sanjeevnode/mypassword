@@ -100,13 +100,14 @@ function ChangeMasterPassword({ uid }: { uid: string }) {
 }
 
 function ExportVault({ uid }: { uid: string }) {
-  const { dataKey } = useVault();
+  const { dataKey, requireConfirmation } = useVault();
   const [busy, setBusy] = useState(false);
 
   const exportJson = async () => {
     if (!dataKey) return;
     if (!confirm("This downloads all your passwords as UNENCRYPTED JSON. Store it somewhere safe. Continue?"))
       return;
+    if (!(await requireConfirmation())) return;
     setBusy(true);
     try {
       const entries = await listEntries(uid);
