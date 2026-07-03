@@ -192,7 +192,7 @@ function Dashboard({ uid }: { uid: string }) {
               <GlowCard key={entry.id} className="flex flex-col p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-sm font-bold text-violet-300">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/8 text-sm font-bold text-violet-200">
                       {entry.site.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -202,7 +202,7 @@ function Dashboard({ uid }: { uid: string }) {
                           href={entry.url.startsWith("http") ? entry.url : `https://${entry.url}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center gap-1 truncate text-[11px] text-zinc-500 hover:text-violet-300"
+                          className="flex items-center gap-1 truncate text-[11px] text-zinc-400 hover:text-violet-300"
                         >
                           <Globe size={10} className="shrink-0" />
                           <span className="truncate">{entry.url}</span>
@@ -229,9 +229,9 @@ function Dashboard({ uid }: { uid: string }) {
                 )}
 
                 {secret && (
-                  <div className="mt-3 space-y-1 rounded-lg border border-white/[0.07] bg-black/40 p-3 text-[13px]">
-                    <p className="truncate text-zinc-400">
-                      <span className="text-zinc-600">user </span>
+                  <div className="mt-3 space-y-1 rounded-lg border border-white/12 bg-black/50 p-3 text-[13px]">
+                    <p className="truncate text-zinc-300">
+                      <span className="text-zinc-500">user </span>
                       {secret.username || "—"}
                     </p>
                     <p className="break-all font-mono text-violet-200">{secret.password}</p>
@@ -287,7 +287,7 @@ function TagPill({
         "rounded-full px-3 py-1 text-xs font-medium transition",
         active
           ? "border border-violet-500/40 bg-violet-500/20 text-violet-200"
-          : "border border-white/[0.08] bg-white/[0.03] text-zinc-500 hover:border-violet-500/30 hover:text-zinc-300"
+          : "border border-white/15 bg-white/6 text-zinc-300 hover:border-violet-500/40 hover:text-white"
       )}
     >
       {children}
@@ -311,7 +311,7 @@ function IconBtn({
       title={title}
       onClick={onClick}
       className={cn(
-        "rounded-md p-1.5 text-zinc-500 transition hover:bg-white/[0.06]",
+        "rounded-md p-1.5 text-zinc-400 transition hover:bg-white/[0.06]",
         danger ? "hover:text-rose-400" : "hover:text-white"
       )}
     >

@@ -23,7 +23,7 @@ export function GlassInput(props: InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...rest}
       className={cn(
-        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500",
+        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
         className
       )}
     />
@@ -36,7 +36,7 @@ export function GlassTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>
     <textarea
       {...rest}
       className={cn(
-        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-500",
+        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
         className
       )}
     />
@@ -62,7 +62,7 @@ export function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       {...rest}
       className={cn(
-        "btn-ghost inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-300 hover:text-white",
+        "btn-ghost inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-200 hover:text-white",
         className
       )}
     />
@@ -71,7 +71,7 @@ export function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
 
 export function Tag({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-violet-500/25 bg-violet-500/10 px-2 py-0.5 text-[11px] font-medium text-violet-300">
+    <span className="inline-flex items-center rounded-md border border-violet-400/40 bg-violet-500/20 px-2 py-0.5 text-[11px] font-medium text-violet-200">
       {children}
     </span>
   );

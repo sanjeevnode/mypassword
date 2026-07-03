@@ -44,18 +44,18 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* faint dot grid over pure black */
+/* faint dot grid over pure black — kept subtle so content stays in focus */
 .bg-grid {
-  background-image: radial-gradient(rgba(139, 92, 246, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(139, 92, 246, 0.07) 1px, transparent 1px);
   background-size: 28px 28px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 30%, transparent 100%);
 }
 
-/* panel: near-black card with a hairline purple border */
+/* panel: elevated dark card that clearly separates from the black background */
 .panel {
-  background: linear-gradient(180deg, rgba(20, 16, 32, 0.6), rgba(8, 8, 12, 0.9));
-  border: 1px solid rgba(139, 92, 246, 0.16);
+  background: linear-gradient(180deg, rgba(42, 36, 62, 0.55), rgba(22, 21, 30, 0.95));
+  border: 1px solid rgba(167, 139, 250, 0.28);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 20px 50px -20px rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -72,8 +72,8 @@ body {
 }
 
 .field {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
 }
 
@@ -126,8 +126,8 @@ body {
 }
 
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   transition: background 0.15s, border-color 0.15s;
 }
 
