@@ -31,6 +31,7 @@ export default function Navbar() {
   ];
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-white/6 bg-black/60 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="group flex items-center gap-2.5">
@@ -81,8 +82,11 @@ export default function Navbar() {
           </>
         )}
       </div>
+    </header>
 
-      {/* mobile sidebar */}
+      {/* mobile sidebar — sibling of the header: backdrop-filter on the header
+          makes it the containing block for fixed descendants, which would clip
+          this overlay to the header strip */}
       {user && (
         <div
           className={cn(
@@ -162,7 +166,7 @@ export default function Navbar() {
           </aside>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
