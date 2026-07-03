@@ -101,7 +101,7 @@ export default function Navbar() {
           {/* panel */}
           <aside
             className={cn(
-              "panel absolute right-0 top-0 flex h-full w-72 flex-col border-l border-violet-500/20 transition-transform duration-300",
+              "absolute right-0 top-0 flex h-full w-72 flex-col border-l border-violet-500/25 bg-[#0e0c16] shadow-[-20px_0_60px_rgba(0,0,0,0.8)] transition-transform duration-300",
               open ? "translate-x-0" : "translate-x-full"
             )}
           >
