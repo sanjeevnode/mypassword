@@ -12,8 +12,8 @@ export default function Logo({ size = 32 }: { size?: number }) {
         </linearGradient>
       </defs>
       {/* black rounded tile with gradient ring */}
-      <rect x="2" y="2" width="60" height="60" rx="16" fill="#08080c" />
-      <rect x="2" y="2" width="60" height="60" rx="16" stroke="url(#lg-ring)" strokeWidth="2.5" />
+      <rect x="2" y="2" width="60" height="60" rx="4" fill="#08080c" />
+      <rect x="2" y="2" width="60" height="60" rx="4" stroke="url(#lg-ring)" strokeWidth="2.5" />
       {/* shield */}
       <path
         d="M32 11.5 L49 18 V31 C49 41.5 41.5 48.5 32 52.5 C22.5 48.5 15 41.5 15 31 V18 Z"

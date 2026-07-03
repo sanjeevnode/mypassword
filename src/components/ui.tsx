@@ -14,7 +14,7 @@ export function GlassCard({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn("panel rounded-2xl", className)}>{children}</div>;
+  return <div className={cn("panel rounded-none", className)}>{children}</div>;
 }
 
 export function GlassInput(props: InputHTMLAttributes<HTMLInputElement>) {
@@ -23,7 +23,7 @@ export function GlassInput(props: InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...rest}
       className={cn(
-        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
+        "field w-full rounded-none px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
         className
       )}
     />
@@ -36,7 +36,7 @@ export function GlassTextarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>
     <textarea
       {...rest}
       className={cn(
-        "field w-full rounded-lg px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
+        "field w-full rounded-none px-3.5 py-2.5 text-sm text-zinc-100 placeholder-zinc-400",
         className
       )}
     />
@@ -49,7 +49,7 @@ export function PrimaryButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       {...rest}
       className={cn(
-        "btn-solid inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white",
+        "btn-solid inline-flex items-center justify-center gap-2 rounded-none px-5 py-2.5 text-sm font-semibold text-white",
         className
       )}
     />
@@ -62,7 +62,7 @@ export function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       {...rest}
       className={cn(
-        "btn-ghost inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium text-zinc-200 hover:text-white",
+        "btn-ghost inline-flex items-center justify-center gap-2 rounded-none px-3.5 py-2 text-sm font-medium text-zinc-200 hover:text-white",
         className
       )}
     />
@@ -71,7 +71,7 @@ export function GhostButton(props: ButtonHTMLAttributes<HTMLButtonElement>) {
 
 export function Tag({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-violet-400/40 bg-violet-500/20 px-2 py-0.5 text-[11px] font-medium text-violet-200">
+    <span className="inline-flex items-center rounded-none border border-violet-400/40 bg-violet-500/20 px-2 py-0.5 text-[11px] font-medium text-violet-200">
       {children}
     </span>
   );

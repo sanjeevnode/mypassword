@@ -29,7 +29,7 @@ export function GlowCard({
       onMouseMove={onMouseMove}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      className={cn("panel panel-hover relative overflow-hidden rounded-2xl", className)}
+      className={cn("panel panel-hover relative overflow-hidden rounded-none", className)}
     >
       <div
         className="pointer-events-none absolute inset-0 transition-opacity duration-300"

@@ -168,5 +168,5 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #26203a;
-  border-radius: 5px;
+  border-radius: 0;
 }

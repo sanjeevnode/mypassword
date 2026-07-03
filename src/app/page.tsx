@@ -38,8 +38,8 @@ export default function Home() {
       {/* hero — left aligned, aceternity style */}
       <section className="relative mx-auto grid max-w-5xl items-center gap-10 pb-16 pt-20 md:grid-cols-[1.2fr_0.8fr] md:pt-28">
         <div>
-          <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] py-1 pl-1.5 pr-3 text-xs font-medium text-zinc-300">
-            <span className="rounded-full bg-violet-600 px-2 py-0.5 text-[11px] font-semibold text-white">
+          <div className="mb-7 inline-flex items-center gap-2.5 rounded-none border border-white/10 bg-white/[0.04] py-1 pl-1.5 pr-3 text-xs font-medium text-zinc-300">
+            <span className="rounded-none bg-violet-600 px-2 py-0.5 text-[11px] font-semibold text-white">
               Security
             </span>
             Zero-knowledge encryption
@@ -60,7 +60,7 @@ export default function Home() {
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <button
               onClick={signIn}
-              className="btn-solid inline-flex items-center gap-2.5 rounded-xl px-7 py-3 text-sm font-semibold text-white"
+              className="btn-solid inline-flex items-center gap-2.5 rounded-none px-7 py-3 text-sm font-semibold text-white"
             >
               <GoogleIcon /> Continue with Google
             </button>
@@ -68,7 +68,7 @@ export default function Home() {
               href="https://github.com/sanjeevnode/mypassword"
               target="_blank"
               rel="noreferrer"
-              className="btn-ghost inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-medium text-zinc-200"
+              className="btn-ghost inline-flex items-center gap-2 rounded-none px-6 py-3 text-sm font-medium text-zinc-200"
             >
               <GithubIcon /> View source
             </a>
@@ -103,7 +103,7 @@ export default function Home() {
 
       {/* product preview frame — aceternity style browser mock */}
       <section className="mx-auto max-w-5xl pb-20">
-        <div className="panel overflow-hidden rounded-2xl">
+        <div className="panel overflow-hidden rounded-none">
           {/* chrome bar */}
           <div className="flex items-center gap-3 border-b border-white/[0.06] bg-black/50 px-4 py-3">
             <div className="flex gap-1.5">
@@ -111,7 +111,7 @@ export default function Home() {
               <span className="h-3 w-3 rounded-full bg-amber-500/80" />
               <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
             </div>
-            <div className="ml-2 flex items-center gap-2 rounded-md border border-white/[0.07] bg-white/[0.03] px-3 py-1 text-[11px] text-zinc-500">
+            <div className="ml-2 flex items-center gap-2 rounded-none border border-white/[0.07] bg-white/[0.03] px-3 py-1 text-[11px] text-zinc-500">
               <Lock size={10} className="text-violet-400" />
               mypassword.sanjeevnode.in/vault
             </div>
@@ -126,15 +126,15 @@ export default function Home() {
                 </p>
                 <p className="text-lg font-bold text-white">6 credentials</p>
               </div>
-              <span className="btn-solid rounded-lg px-4 py-2 text-xs font-semibold text-white">
+              <span className="btn-solid rounded-none px-4 py-2 text-xs font-semibold text-white">
                 + New credential
               </span>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {MOCK_ENTRIES.map((m) => (
-                <div key={m.site} className="panel rounded-xl p-4">
+                <div key={m.site} className="panel rounded-none p-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-[13px] font-bold text-violet-300">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-none border border-white/10 bg-white/[0.04] text-[13px] font-bold text-violet-300">
                       {m.site[0]}
                     </div>
                     <div>
@@ -147,7 +147,7 @@ export default function Home() {
                       <Tag key={t}>#{t}</Tag>
                     ))}
                   </div>
-                  <div className="mt-3 flex items-center justify-between rounded-lg border border-white/[0.06] bg-black/40 px-3 py-2">
+                  <div className="mt-3 flex items-center justify-between rounded-none border border-white/[0.06] bg-black/40 px-3 py-2">
                     <span className="font-mono text-xs tracking-widest text-zinc-600">
                       ••••••••••••
                     </span>
@@ -176,7 +176,7 @@ export default function Home() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* encryption pipeline — wide card */}
           <GlowCard className="p-6 sm:col-span-2">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
               <Lock size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Client-side encryption pipeline</h3>
@@ -188,7 +188,7 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
               <TimerReset size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Locks itself</h3>
@@ -200,7 +200,7 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
               <RefreshCw size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Key rotation</h3>
@@ -211,7 +211,7 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
               <Search size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Search & tags</h3>
@@ -222,7 +222,7 @@ export default function Home() {
           </GlowCard>
 
           <GlowCard className="p-6">
-            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg border border-violet-500/25 bg-violet-500/10 text-violet-400">
+            <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
               <FolderKey size={17} />
             </div>
             <h3 className="text-base font-semibold text-white">Your data, portable</h3>
@@ -263,7 +263,7 @@ export default function Home() {
 
       {/* final CTA */}
       <section className="mx-auto max-w-5xl pb-16">
-        <div className="panel glow-border relative overflow-hidden rounded-2xl p-10 text-center md:p-16">
+        <div className="panel glow-border relative overflow-hidden rounded-none p-10 text-center md:p-16">
           <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-violet-600/20 blur-3xl" />
           <div className="relative">
             <div className="mx-auto mb-6 w-fit drop-shadow-[0_0_24px_rgba(139,92,246,0.5)]">
@@ -277,7 +277,7 @@ export default function Home() {
             </p>
             <button
               onClick={signIn}
-              className="btn-solid mx-auto mt-8 inline-flex items-center gap-2.5 rounded-xl px-8 py-3.5 text-sm font-semibold text-white"
+              className="btn-solid mx-auto mt-8 inline-flex items-center gap-2.5 rounded-none px-8 py-3.5 text-sm font-semibold text-white"
             >
               <GoogleIcon /> Get started — it&apos;s free
             </button>
@@ -331,8 +331,8 @@ function PipeNode({ label, sub, accent }: { label: string; sub: string; accent?:
     <div
       className={
         accent
-          ? "rounded-lg border border-violet-500/40 bg-violet-500/15 px-3 py-2 text-violet-200"
-          : "rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-zinc-300"
+          ? "rounded-none border border-violet-500/40 bg-violet-500/15 px-3 py-2 text-violet-200"
+          : "rounded-none border border-white/10 bg-white/[0.03] px-3 py-2 text-zinc-300"
       }
     >
       {label}
@@ -367,7 +367,7 @@ function LockMeter() {
 
 function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
   return (
-    <div className="panel panel-hover rounded-2xl p-6">
+    <div className="panel panel-hover rounded-none p-6">
       <span className="bg-gradient-to-b from-violet-300 to-violet-600 bg-clip-text text-4xl font-bold text-transparent">
         {n}
       </span>

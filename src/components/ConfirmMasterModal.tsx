@@ -29,8 +29,8 @@ export default function ConfirmMasterModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="panel glow-border w-full max-w-sm rounded-2xl p-6 text-center">
-        <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+      <div className="panel glow-border w-full max-w-sm rounded-none p-6 text-center">
+        <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
           <ShieldCheck size={19} />
         </div>
         <h3 className="text-base font-bold tracking-tight text-white">Confirm it&apos;s you</h3>

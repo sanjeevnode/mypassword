@@ -175,7 +175,7 @@ function Dashboard({ uid }: { uid: string }) {
 
       {filtered.length === 0 ? (
         <GlassCard className="flex flex-col items-center gap-3 p-14 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <div className="flex h-12 w-12 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
             <KeyRound size={20} />
           </div>
           <p className="text-sm text-zinc-400">
@@ -192,7 +192,7 @@ function Dashboard({ uid }: { uid: string }) {
               <GlowCard key={entry.id} className="flex flex-col p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/8 text-sm font-bold text-violet-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none border border-white/15 bg-white/8 text-sm font-bold text-violet-200">
                       {entry.site.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
@@ -229,7 +229,7 @@ function Dashboard({ uid }: { uid: string }) {
                 )}
 
                 {secret && (
-                  <div className="mt-3 space-y-1 rounded-lg border border-white/12 bg-black/50 p-3 text-[13px]">
+                  <div className="mt-3 space-y-1 rounded-none border border-white/12 bg-black/50 p-3 text-[13px]">
                     <p className="truncate text-zinc-300">
                       <span className="text-zinc-500">user </span>
                       {secret.username || "—"}
@@ -284,7 +284,7 @@ function TagPill({
     <button
       onClick={onClick}
       className={cn(
-        "rounded-full px-3 py-1 text-xs font-medium transition",
+        "rounded-none px-3 py-1 text-xs font-medium transition",
         active
           ? "border border-violet-500/40 bg-violet-500/20 text-violet-200"
           : "border border-white/15 bg-white/6 text-zinc-300 hover:border-violet-500/40 hover:text-white"
@@ -311,7 +311,7 @@ function IconBtn({
       title={title}
       onClick={onClick}
       className={cn(
-        "rounded-md p-1.5 text-zinc-400 transition hover:bg-white/[0.06]",
+        "rounded-none p-1.5 text-zinc-400 transition hover:bg-white/[0.06]",
         danger ? "hover:text-rose-400" : "hover:text-white"
       )}
     >
@@ -324,7 +324,7 @@ function ActionBtn({ onClick, children }: { onClick: () => void; children: React
   return (
     <button
       onClick={onClick}
-      className="btn-ghost flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white"
+      className="btn-ghost flex flex-1 items-center justify-center gap-1.5 rounded-none px-3 py-1.5 text-xs font-medium text-zinc-300 hover:text-white"
     >
       {children}
     </button>

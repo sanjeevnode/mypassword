@@ -43,7 +43,7 @@ function SetupForm() {
   return (
     <div className="flex min-h-[65vh] items-center justify-center">
       <GlowCard className="glow-border w-full max-w-md p-8">
-        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
           <ShieldCheck size={20} />
         </div>
         <SectionLabel>One-time setup</SectionLabel>
@@ -96,7 +96,7 @@ function UnlockForm() {
   return (
     <div className="flex min-h-[65vh] items-center justify-center">
       <GlowCard className="glow-border w-full max-w-sm p-8 text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
           <Lock size={20} />
         </div>
         <h2 className="text-lg font-bold tracking-tight text-white">Vault is locked</h2>

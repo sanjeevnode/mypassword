@@ -57,7 +57,7 @@ export default function EntryModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="panel glow-border w-full max-w-lg rounded-2xl p-6">
+      <div className="panel glow-border w-full max-w-lg rounded-none p-6">
         <div className="mb-5 flex items-start justify-between">
           <div>
             <SectionLabel>{initial ? "Edit" : "New"}</SectionLabel>
@@ -65,7 +65,7 @@ export default function EntryModal({
               {initial ? "Edit credential" : "Add credential"}
             </h3>
           </div>
-          <button onClick={onClose} className="rounded-md p-1.5 text-zinc-500 transition hover:bg-white/5 hover:text-white">
+          <button onClick={onClose} className="rounded-none p-1.5 text-zinc-500 transition hover:bg-white/5 hover:text-white">
             <X size={16} />
           </button>
         </div>

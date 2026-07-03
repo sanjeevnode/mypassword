@@ -29,7 +29,7 @@ export default function ProfilePage() {
         </div>
 
         <GlassCard className="flex items-center gap-4 p-6">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 text-violet-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-none border border-violet-500/25 bg-violet-500/10 text-violet-400">
             <UserRound size={19} />
           </div>
           <div>
