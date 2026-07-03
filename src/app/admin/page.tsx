@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { KeyRound, RefreshCw, ShieldCheck, ShieldOff, Users, Vault } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { GlassCard, Spinner, SectionLabel, GhostButton, PageLoader } from "@/components/ui";
+import { GlassCard, SectionLabel, GhostButton, PageLoader } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 interface AdminUser {
@@ -32,12 +32,14 @@ export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState("");
   const [busyUid, setBusyUid] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const isAdmin = !!ADMIN_EMAIL && user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
   const load = useCallback(async () => {
     if (!user) return;
     setError("");
+    setRefreshing(true);
     try {
       const token = await user.getIdToken();
       const res = await fetch("/api/admin/stats", {
@@ -47,6 +49,8 @@ export default function AdminPage() {
       setStats(await res.json());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load stats.");
+    } finally {
+      setRefreshing(false);
     }
   }, [user]);
 
@@ -88,8 +92,9 @@ export default function AdminPage() {
           <SectionLabel>Admin</SectionLabel>
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-white">Dashboard</h1>
         </div>
-        <GhostButton onClick={load}>
-          <RefreshCw size={13} /> Refresh
+        <GhostButton onClick={load} disabled={refreshing}>
+          <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} />
+          {refreshing ? "Refreshing…" : "Refresh"}
         </GhostButton>
       </div>
 
@@ -105,7 +110,7 @@ export default function AdminPage() {
       )}
 
       {!stats && !error ? (
-        <Spinner />
+        <PageLoader label="Crunching analytics…" />
       ) : stats ? (
         <>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
