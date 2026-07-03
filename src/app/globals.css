@@ -84,6 +84,14 @@ body {
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
+/* hero accent: gradient-clipped text (motion animates the background-position) */
+.hero-gradient-text {
+  background-image: linear-gradient(90deg, #a78bfa, #e9d5ff, #7c3aed, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* solid primary button — aceternity's white CTA, in purple */
 .btn-solid {
   background: linear-gradient(180deg, #8b5cf6, #7c3aed);

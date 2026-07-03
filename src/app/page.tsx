@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
+  CheckCircle2,
   Copy,
   Eye,
+  EyeOff,
   FolderKey,
   KeyRound,
   Lock,
@@ -36,31 +39,51 @@ export default function Home() {
       <Spotlight className="-top-40 left-0 md:-top-20 md:left-40" />
 
       {/* hero — left aligned, aceternity style */}
-      <section className="relative mx-auto grid max-w-5xl items-center gap-10 pb-14 pt-8 md:grid-cols-[1.2fr_0.8fr] md:pt-12">
+      <section className="relative mx-auto grid max-w-5xl items-start gap-12 pb-16 pt-8 md:grid-cols-[1.15fr_0.85fr] md:pt-12">
         <div>
-          <div className="mb-7 inline-flex items-center gap-2.5 rounded-none border border-white/10 bg-white/[0.04] py-1 pl-1.5 pr-3 text-xs font-medium text-zinc-300">
-            <span className="rounded-none bg-violet-600 px-2 py-0.5 text-[11px] font-semibold text-white">
+          <div className="mb-8 inline-flex items-center gap-3 rounded-none border border-white/10 bg-white/4 py-1.5 pl-2 pr-4 text-[13px] font-medium text-zinc-200">
+            <span className="flex h-7 w-7 items-center justify-center rounded-none bg-violet-600 text-white">
+              <Lock size={12} />
+            </span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-violet-300">
               Security
             </span>
+            <span className="h-4 w-px bg-white/15" />
             Zero-knowledge encryption
-            <ArrowRight size={12} className="text-zinc-400" />
+            <ArrowRight size={13} className="text-zinc-400" />
           </div>
 
-          <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl">
-            Own your passwords
-            <br />
-            <span className="text-violet-400">end to end.</span>
-          </h1>
+          <HeroTitle />
 
-          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-zinc-300">
-            Every credential is sealed with AES-256 in your browser before it touches a server. Not
-            us, not Google, not anyone can read your vault — only your master password can open it.
+          <p className="mt-6 max-w-lg text-[16px] leading-relaxed text-zinc-300">
+            Every credential is encrypted on your device before it ever leaves your browser. Not
+            us, not Google, not anyone can read your vault —{" "}
+            <span className="font-semibold text-violet-300">only your master password</span> can
+            open it.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          {/* trust strip */}
+          <div className="mt-8 flex max-w-lg divide-x divide-white/10 rounded-none border border-white/10 bg-white/3 px-2 py-4">
+            <div className="flex flex-1 items-center gap-3 px-4">
+              <ShieldCheck size={22} className="shrink-0 text-violet-400" />
+              <div>
+                <p className="text-[14px] font-semibold text-white">Zero-knowledge</p>
+                <p className="text-[12.5px] text-zinc-400">We can&apos;t access your data</p>
+              </div>
+            </div>
+            <div className="flex flex-1 items-center gap-3 px-4">
+              <Lock size={22} className="shrink-0 text-violet-400" />
+              <div>
+                <p className="text-[14px] font-semibold text-white">Client-side encryption</p>
+                <p className="text-[12.5px] text-zinc-400">Before it leaves your device</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <button
               onClick={signIn}
-              className="btn-solid inline-flex items-center gap-2.5 rounded-none px-7 py-3 text-sm font-semibold text-white"
+              className="btn-solid inline-flex items-center gap-2.5 rounded-none px-7 py-3.5 text-sm font-semibold text-white"
             >
               <GoogleIcon /> Continue with Google
             </button>
@@ -68,35 +91,59 @@ export default function Home() {
               href="https://github.com/sanjeevnode/mypassword"
               target="_blank"
               rel="noreferrer"
-              className="btn-ghost inline-flex items-center gap-2 rounded-none px-6 py-3 text-sm font-medium text-zinc-200"
+              className="btn-ghost inline-flex items-center gap-2 rounded-none px-6 py-3.5 text-sm font-medium text-zinc-200"
             >
               <GithubIcon /> View source
             </a>
           </div>
+
+          <p className="mt-5 flex items-center gap-2 text-[13px] text-zinc-400">
+            <ShieldCheck size={14} className="text-violet-400" />
+            No credit card. No tracking. Open source.
+          </p>
         </div>
 
-        <div className="hidden md:block">
-          <div className="space-y-4 text-sm text-zinc-300">
-            <p className="leading-relaxed">
+        {/* right rail — feature list */}
+        <div className="hidden md:block md:pt-2">
+          <div className="space-y-6 border-l border-white/10 pl-8">
+            <p className="text-[15px] leading-relaxed text-zinc-300">
               Built on the same model trusted by leading password managers — envelope encryption
               with Argon2id key derivation.
             </p>
-            <div className="flex items-center gap-1 text-violet-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={14} fill="currentColor" />
-              ))}
+
+            <div className="divide-y divide-white/8">
+              <FeatureRow
+                icon={<ShieldCheck size={18} />}
+                title="Strong by default"
+                desc="AES-256-GCM encryption protects your data."
+              />
+              <FeatureRow
+                icon={<KeyRound size={18} />}
+                title="Modern security"
+                desc="Argon2id key derivation resists brute-force attacks."
+              />
+              <FeatureRow
+                icon={<EyeOff size={18} />}
+                title="Privacy first"
+                desc="Zero-knowledge architecture — we never see your data."
+              />
+              <FeatureRow
+                icon={<CheckCircle2 size={18} />}
+                title="Verify to trust"
+                desc="Open source and auditable. Re-verify every update."
+              />
             </div>
-            <ul className="space-y-2 text-[13px] text-zinc-400">
-              <li className="flex items-center gap-2">
-                <ShieldCheck size={14} className="text-violet-400" /> Argon2id · 64 MiB memory-hard KDF
-              </li>
-              <li className="flex items-center gap-2">
-                <Lock size={14} className="text-violet-400" /> AES-256-GCM envelope encryption
-              </li>
-              <li className="flex items-center gap-2">
-                <Eye size={14} className="text-violet-400" /> Re-verifies you before every reveal
-              </li>
-            </ul>
+
+            <div>
+              <div className="flex items-center gap-1.5 text-violet-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={18} fill="currentColor" />
+                ))}
+              </div>
+              <p className="mt-2 text-[13.5px] text-zinc-400">
+                Trusted by privacy-conscious users
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -307,6 +354,68 @@ export default function Home() {
           </span>
         </div>
       </footer>
+    </div>
+  );
+}
+
+/** Staggered word-reveal headline (framer motion) with an animated gradient accent line. */
+function HeroTitle() {
+  const lines: { words: string[]; accent?: boolean }[] = [
+    { words: ["Your", "passwords."] },
+    { words: ["Your", "vault."] },
+    { words: ["Zero", "knowledge."], accent: true },
+  ];
+  let i = 0;
+  return (
+    <h1 className="text-[2.6rem] font-bold leading-[1.12] tracking-tight text-white md:text-6xl">
+      {lines.map((line) => (
+        <span key={line.words.join(" ")} className="relative block">
+          {line.accent && (
+            <motion.span
+              className="pointer-events-none absolute -inset-x-6 inset-y-0 bg-violet-600/25 blur-3xl"
+              animate={{ opacity: [0.35, 0.7, 0.35] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          )}
+          {line.words.map((w) => (
+            <motion.span
+              key={w}
+              className="mr-[0.26em] inline-block"
+              initial={{ opacity: 0, y: 22, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ delay: 0.15 + i++ * 0.13, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {line.accent ? (
+                <motion.span
+                  className="hero-gradient-text"
+                  style={{ backgroundSize: "200% auto" }}
+                  animate={{ backgroundPosition: ["0% 50%", "200% 50%"] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+                >
+                  {w}
+                </motion.span>
+              ) : (
+                w
+              )}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+
+/** right-rail feature row: square icon tile + title + description */
+function FeatureRow({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <div className="flex items-start gap-4 py-4 first:pt-0 last:pb-0">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-violet-500/30 bg-violet-500/10 text-violet-300">
+        {icon}
+      </div>
+      <div>
+        <p className="text-[14.5px] font-semibold text-white">{title}</p>
+        <p className="mt-0.5 text-[13px] leading-relaxed text-zinc-400">{desc}</p>
+      </div>
     </div>
   );
 }
