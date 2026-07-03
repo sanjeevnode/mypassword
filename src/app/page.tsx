@@ -16,7 +16,7 @@ import {
   TimerReset,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { Spinner, Tag, SectionLabel } from "@/components/ui";
+import { Tag, SectionLabel, PageLoader } from "@/components/ui";
 import { Spotlight } from "@/components/aceternity/Spotlight";
 import { GlowCard } from "@/components/aceternity/GlowCard";
 import Logo from "@/components/Logo";
@@ -29,7 +29,7 @@ export default function Home() {
     if (!loading && user) router.replace("/vault");
   }, [loading, user, router]);
 
-  if (loading) return <Spinner />;
+  if (loading) return <PageLoader label="Signing you in…" />;
 
   return (
     <div className="relative">

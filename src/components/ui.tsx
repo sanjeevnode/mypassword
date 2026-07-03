@@ -6,6 +6,7 @@
  */
 import { ReactNode, InputHTMLAttributes, ButtonHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
+import Logo from "./Logo";
 
 export function GlassCard({
   children,
@@ -77,10 +78,26 @@ export function Tag({ children }: { children: ReactNode }) {
   );
 }
 
+/** Small inline spinner for buttons and rows. */
 export function Spinner() {
   return (
     <div className="flex justify-center py-16">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
+    </div>
+  );
+}
+
+/** Full-page centered glass loader, used for auth/vault loading states. */
+export function PageLoader({ label = "Loading…" }: { label?: string }) {
+  return (
+    <div className="flex min-h-[70vh] items-center justify-center">
+      <div className="panel glow-border flex flex-col items-center gap-5 rounded-none px-14 py-10">
+        <div className="relative">
+          <div className="absolute -inset-3 animate-spin rounded-full border border-violet-500/40 border-t-violet-300" />
+          <Logo size={44} />
+        </div>
+        <p className="text-[13px] font-medium tracking-wide text-zinc-300">{label}</p>
+      </div>
     </div>
   );
 }

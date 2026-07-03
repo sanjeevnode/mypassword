@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { KeyRound, RefreshCw, ShieldCheck, ShieldOff, Users, Vault } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { GlassCard, Spinner, SectionLabel, GhostButton } from "@/components/ui";
+import { GlassCard, Spinner, SectionLabel, GhostButton, PageLoader } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 interface AdminUser {
@@ -58,7 +58,7 @@ export default function AdminPage() {
     if (isAdmin) load();
   }, [isAdmin, load]);
 
-  if (loading || !user || !isAdmin) return <Spinner />;
+  if (loading || !user || !isAdmin) return <PageLoader label="Checking access…" />;
 
   const toggle = async (u: AdminUser) => {
     const verb = u.disabled ? "reactivate" : "deactivate";
@@ -167,7 +167,7 @@ export default function AdminPage() {
                               : "bg-rose-500/15 text-rose-300 hover:bg-rose-500/25"
                           )}
                         >
-                          {busyUid === u.uid ? "…" : u.disabled ? "Reactivate" : "Deactivate"}
+                          {busyUid === u.uid ? <span className="inline-flex items-center gap-1"><span className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" /> Working…</span> : u.disabled ? "Reactivate" : "Deactivate"}
                         </button>
                       )}
                     </td>

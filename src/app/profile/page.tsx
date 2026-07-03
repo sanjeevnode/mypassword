@@ -2,14 +2,14 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Download, FileSpreadsheet, KeyRound, Trash2, Upload, UserRound } from "lucide-react";
+import { Download, FileSpreadsheet, KeyRound, Loader2, Trash2, Upload, UserRound } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useVault } from "@/context/VaultContext";
 import { encryptJson, decryptJson } from "@/lib/crypto";
 import { listEntries, rotateEntries, addEntry, EntrySecret } from "@/lib/vault";
 import { csvTemplate, downloadFile, parseCsv, toCsv } from "@/lib/csv";
 import MasterGate from "@/components/MasterGate";
-import { GlassCard, GlassInput, PrimaryButton, GhostButton, Spinner, SectionLabel } from "@/components/ui";
+import { GlassCard, GlassInput, PrimaryButton, GhostButton, SectionLabel, PageLoader } from "@/components/ui";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
@@ -19,7 +19,7 @@ export default function ProfilePage() {
     if (!loading && !user) router.replace("/");
   }, [loading, user, router]);
 
-  if (loading || !user) return <Spinner />;
+  if (loading || !user) return <PageLoader label="Loading profile…" />;
 
   return (
     <MasterGate>
@@ -110,6 +110,7 @@ function ChangeMasterPassword({ uid }: { uid: string }) {
         </div>
         {msg && <p className={`text-sm ${msg.ok ? "text-emerald-400" : "text-rose-400"}`}>{msg.text}</p>}
         <PrimaryButton type="submit" disabled={busy || !current || !next}>
+          {busy && <Loader2 size={13} className="animate-spin" />}
           {busy ? "Re-encrypting vault…" : "Change & Re-encrypt"}
         </PrimaryButton>
       </form>
@@ -173,7 +174,7 @@ function ImportCsv({ uid }: { uid: string }) {
         <label
           className={`btn-ghost inline-flex items-center gap-2 rounded-none px-3.5 py-2 text-sm font-medium text-zinc-200 hover:text-white ${busy ? "pointer-events-none opacity-50" : "cursor-pointer"}`}
         >
-          <Upload size={13} />
+          {busy ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
           {busy ? "Encrypting & importing…" : "Upload filled CSV"}
           <input
             type="file"
@@ -235,7 +236,7 @@ function ExportVault({ uid }: { uid: string }) {
         template. The file is plaintext, so handle it with care.
       </p>
       <GhostButton onClick={exportCsv} disabled={busy}>
-        <Download size={13} />
+        {busy ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
         {busy ? "Decrypting…" : "Export as CSV"}
       </GhostButton>
     </GlassCard>
@@ -301,7 +302,7 @@ function DangerZone() {
           disabled={busy || phrase !== "DELETE"}
           className="inline-flex items-center gap-2 border border-rose-500/40 bg-rose-500/15 px-4 py-2.5 text-sm font-semibold text-rose-300 transition hover:bg-rose-500/25 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          <Trash2 size={13} />
+          {busy ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
           {busy ? "Deleting everything…" : "Delete my account"}
         </button>
       </div>

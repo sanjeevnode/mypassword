@@ -11,6 +11,7 @@ import {
   EyeOff,
   Globe,
   KeyRound,
+  Loader2,
   Pencil,
   Plus,
   Search,
@@ -30,7 +31,7 @@ import {
 import MasterGate from "@/components/MasterGate";
 import EntryModal, { EntryFormValue } from "@/components/EntryModal";
 import { GlowCard } from "@/components/aceternity/GlowCard";
-import { GlassCard, GlassInput, PrimaryButton, Tag, Spinner, SectionLabel } from "@/components/ui";
+import { GlassCard, GlassInput, PrimaryButton, Tag, SectionLabel, PageLoader } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 export default function VaultPage() {
@@ -41,7 +42,7 @@ export default function VaultPage() {
     if (!loading && !user) router.replace("/");
   }, [loading, user, router]);
 
-  if (loading || !user) return <Spinner />;
+  if (loading || !user) return <PageLoader label="Opening your vault…" />;
 
   return (
     <MasterGate>
@@ -59,6 +60,17 @@ function Dashboard({ uid }: { uid: string }) {
   const [revealed, setRevealed] = useState<Record<string, EntrySecret>>({});
   const [copied, setCopied] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  // which entry+action is currently working, e.g. "abc123:reveal"
+  const [pending, setPending] = useState<string | null>(null);
+
+  const withPending = async (key: string, fn: () => Promise<void>) => {
+    setPending(key);
+    try {
+      await fn();
+    } finally {
+      setPending(null);
+    }
+  };
 
   const reload = useCallback(async () => {
     setEntries(await listEntries(uid));
@@ -112,7 +124,7 @@ function Dashboard({ uid }: { uid: string }) {
     await reload();
   };
 
-  const reveal = async (entry: Entry) => {
+  const reveal = (entry: Entry) => {
     if (!dataKey) return;
     if (revealed[entry.id]) {
       setRevealed((r) => {
@@ -122,34 +134,42 @@ function Dashboard({ uid }: { uid: string }) {
       });
       return;
     }
-    if (!(await requireConfirmation())) return;
-    const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
-    setRevealed((r) => ({ ...r, [entry.id]: secret }));
+    return withPending(`${entry.id}:reveal`, async () => {
+      if (!(await requireConfirmation())) return;
+      const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
+      setRevealed((r) => ({ ...r, [entry.id]: secret }));
+    });
   };
 
-  const copyPassword = async (entry: Entry) => {
+  const copyPassword = (entry: Entry) => {
     if (!dataKey) return;
-    if (!(await requireConfirmation())) return;
-    const secret = revealed[entry.id] ?? (await decryptJson<EntrySecret>(dataKey, entry.blob));
-    await navigator.clipboard.writeText(secret.password);
-    setCopied(entry.id);
-    setTimeout(() => setCopied(null), 1500);
+    return withPending(`${entry.id}:copy`, async () => {
+      if (!(await requireConfirmation())) return;
+      const secret = revealed[entry.id] ?? (await decryptJson<EntrySecret>(dataKey, entry.blob));
+      await navigator.clipboard.writeText(secret.password);
+      setCopied(entry.id);
+      setTimeout(() => setCopied(null), 1500);
+    });
   };
 
-  const edit = async (entry: Entry) => {
+  const edit = (entry: Entry) => {
     if (!dataKey) return;
-    if (!(await requireConfirmation())) return;
-    const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
-    setModal({ entry, secret });
+    return withPending(`${entry.id}:edit`, async () => {
+      if (!(await requireConfirmation())) return;
+      const secret = await decryptJson<EntrySecret>(dataKey, entry.blob);
+      setModal({ entry, secret });
+    });
   };
 
-  const remove = async (entry: Entry) => {
+  const remove = (entry: Entry) => {
     if (!confirm(`Delete "${entry.site}"? This cannot be undone.`)) return;
-    await deleteEntry(uid, entry.id);
-    await reload();
+    return withPending(`${entry.id}:delete`, async () => {
+      await deleteEntry(uid, entry.id);
+      await reload();
+    });
   };
 
-  if (!entries) return <Spinner />;
+  if (!entries) return <PageLoader label="Fetching credentials…" />;
 
   return (
     <div className="space-y-6">
@@ -228,10 +248,18 @@ function Dashboard({ uid }: { uid: string }) {
                   </div>
                   <div className="flex shrink-0 gap-0.5">
                     <IconBtn title="Edit" onClick={() => edit(entry)}>
-                      <Pencil size={13} />
+                      {pending === `${entry.id}:edit` ? (
+                        <Loader2 size={13} className="animate-spin text-violet-300" />
+                      ) : (
+                        <Pencil size={13} />
+                      )}
                     </IconBtn>
                     <IconBtn title="Delete" danger onClick={() => remove(entry)}>
-                      <Trash2 size={13} />
+                      {pending === `${entry.id}:delete` ? (
+                        <Loader2 size={13} className="animate-spin text-rose-300" />
+                      ) : (
+                        <Trash2 size={13} />
+                      )}
                     </IconBtn>
                   </div>
                 </div>
@@ -261,16 +289,24 @@ function Dashboard({ uid }: { uid: string }) {
 
                 <div className="mt-4 -mx-4 -mb-4 flex divide-x divide-white/8 border-t border-white/8">
                   <ActionBtn onClick={() => reveal(entry)}>
-                    {secret ? <EyeOff size={13} /> : <Eye size={13} />}
-                    {secret ? "Hide" : "Reveal"}
+                    {pending === `${entry.id}:reveal` ? (
+                      <Loader2 size={13} className="animate-spin text-violet-300" />
+                    ) : secret ? (
+                      <EyeOff size={13} />
+                    ) : (
+                      <Eye size={13} />
+                    )}
+                    {pending === `${entry.id}:reveal` ? "Decrypting…" : secret ? "Hide" : "Reveal"}
                   </ActionBtn>
                   <ActionBtn onClick={() => copyPassword(entry)}>
-                    {copied === entry.id ? (
+                    {pending === `${entry.id}:copy` ? (
+                      <Loader2 size={13} className="animate-spin text-violet-300" />
+                    ) : copied === entry.id ? (
                       <Check size={13} className="text-emerald-400" />
                     ) : (
                       <Copy size={13} />
                     )}
-                    {copied === entry.id ? "Copied" : "Copy"}
+                    {pending === `${entry.id}:copy` ? "Copying…" : copied === entry.id ? "Copied" : "Copy"}
                   </ActionBtn>
                 </div>
               </GlowCard>

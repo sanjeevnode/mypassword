@@ -7,13 +7,13 @@
 import { useState, ReactNode, FormEvent } from "react";
 import { Lock, ShieldCheck } from "lucide-react";
 import { useVault } from "@/context/VaultContext";
-import { GlassInput, PrimaryButton, Spinner, SectionLabel } from "./ui";
+import { GlassInput, PrimaryButton, SectionLabel, PageLoader } from "./ui";
 import { GlowCard } from "./aceternity/GlowCard";
 
 export default function MasterGate({ children }: { children: ReactNode }) {
   const { status } = useVault();
 
-  if (status === "loading") return <Spinner />;
+  if (status === "loading") return <PageLoader label="Preparing vault…" />;
   if (status === "no-vault") return <SetupForm />;
   if (status === "locked") return <UnlockForm />;
   return <>{children}</>;
